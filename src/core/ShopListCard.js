@@ -11,6 +11,7 @@ import '../assets/shop_card_assets/css/Shopping-Grid.css';
 import '../assets/shop_card_assets/css/styles.css';
 import {addItemtoWishlist} from "./WishlistHelper";
 import ShowCartImage from "./ShowCartImage";
+import {formatPrice, getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const ShopListCard = ({
                           product,
@@ -102,14 +103,6 @@ const ShopListCard = ({
         }
     };
 
-    const calculateDiscountedPrice = (product) => {
-        let price = product.price;
-        if (product.currency === '$') {
-            price = product.price * 180;
-        }
-        return product.currency === '$' ? parseFloat((price - ((price * product.discount) / 100)) / 180).toFixed(2) : parseFloat(price - ((price * product.discount) / 100)).toFixed(2);
-    };
-
     const makeRedirect = redirect => {
         if (redirect) {
             return <Redirect to="/cart"/>
@@ -142,6 +135,8 @@ const ShopListCard = ({
         );
     };
 
+    const activePromotion = isPromotionActive(product);
+
     return (
         <div className="product-grid7">
             <div className="product-image7">
@@ -159,8 +154,14 @@ const ShopListCard = ({
                     {showCartBtn(product.quantity)}
                 </ul>
                 {showStock(product.quantity)}
+                {activePromotion && (
+                    <span className="product-offer-label">{product.discount}% OFF</span>
+                )}
             </div>
             <div className="product-content">
+                {activePromotion && product.promotionTitle && (
+                    <div className="promotion-title">{product.promotionTitle}</div>
+                )}
                 <Link to={`/product/${product._id}`} className="mr-2">
                     <span style={{'fontSize': 'x-large'}} className="title"><a href="javascript : ;">{product.name.length > 20 ? product.name.slice(0, 18) + ' ..' : product.name}</a></span>
                 </Link>
@@ -171,10 +172,15 @@ const ShopListCard = ({
                 </Link>
                 {showRating(product.rating)}
                 <div
-                    className="price">{product.discount > 0 ? product.currency + ' ' + calculateDiscountedPrice(product) : product.currency + ' ' + parseFloat(product.price).toFixed(2)}
+                    className="price">{product.currency + ' ' + formatPrice(getDiscountedPrice(product))}
                     <span
-                        style={{"color": "red"}}>{product.discount > 0 ? product.currency + ' ' + parseFloat(product.price).toFixed(2) : ''}</span>
+                        style={{"color": "red"}}>{activePromotion ? product.currency + ' ' + formatPrice(product.price) : ''}</span>
                 </div>
+                {activePromotion && product.promotionEnd && (
+                    <div className="promotion-expiry">
+                        Ends {new Date(product.promotionEnd).toLocaleDateString()}
+                    </div>
+                )}
             </div>
         </div>
     )

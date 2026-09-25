@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {getProducts} from "./apiCore";
+import {getProducts, getPromotionalOffers} from "./apiCore";
 import Carousel from 'react-bootstrap/Carousel'
 import Ftr from "./Ftr";
 import ShopListCard from "./ShopListCard";
+import {Link} from "react-router-dom";
 
 //images for carousel
 import image1 from '../images/image5.jpg';
@@ -17,6 +18,7 @@ import NavBar from "./NavBar";
 const Home = () => {
 
     const [products, setProducts] = useState([]);
+    const [offers, setOffers] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showView, setShowView] = useState(false);
@@ -33,9 +35,18 @@ const Home = () => {
         })
     };
 
+    const loadOffers = () => {
+        getPromotionalOffers(4).then(data => {
+            if (data && !data.error) {
+                setOffers(data);
+            }
+        });
+    };
+
     useEffect(() => {
         setLoading(true);
         loadProducts();
+        loadOffers();
     }, []);
 
     const appendView = () => {
@@ -88,6 +99,27 @@ const Home = () => {
                             <CategoryCard/>
                         </div>
                     </div>
+
+                    {offers.length > 0 && (
+                        <div className="offers-home-section">
+                            <div className="container">
+                                <div className="offers-heading">
+                                    <div>
+                                        <span className="offers-kicker">LIMITED-TIME SAVINGS</span>
+                                        <h2 className="font-weight-bold">PROMOTIONAL OFFERS</h2>
+                                    </div>
+                                    <Link className="btn btn-outline-dark" to="/offers">View all offers</Link>
+                                </div>
+                                <div className="row">
+                                    {offers.map(product => (
+                                        <div key={product._id} className="col-md-6 col-lg-3 col-sm-6 mb-3">
+                                            <ShopListCard product={product} cartUpdate={true}/>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="shopping-grid">
                         <div className="container">

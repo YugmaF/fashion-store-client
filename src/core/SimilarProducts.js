@@ -6,6 +6,7 @@ import '../assets/similar_products_assets/css/styles.css';
 import {getRelatedProducts} from "./apiCore";
 import {API} from "../config";
 import Image from 'react-bootstrap/Image'
+import {formatPrice, getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const SimilarProducts = (props) => {
     const [similarProducts, setSimilarProducts] = useState([]);
@@ -55,14 +56,6 @@ const SimilarProducts = (props) => {
         }
     };
 
-    const calculateDiscountedPrice = (product) => {
-        let price = product.price;
-        if (product.currency === '$') {
-            price = product.price * 180;
-        }
-        return product.currency === '$' ? parseFloat((price - ((price * product.discount) / 100)) / 180).toFixed(2) : parseFloat(price - ((price * product.discount) / 100)).toFixed(2);
-    };
-
     const populateSimilarProducts = () => {
         let renderData = [];
         similarProducts.forEach(similarProduct => {
@@ -81,9 +74,9 @@ const SimilarProducts = (props) => {
                             <a href={`/product/${similarProduct._id}`} className="text-dark">{similarProduct.name}</a>
                         </h5>
                         <div
-                            className="price">{similarProduct.discount > 0 ? similarProduct.currency + ' ' + calculateDiscountedPrice(similarProduct) : similarProduct.currency + ' ' + parseFloat(similarProduct.price).toFixed(2)}
+                            className="price">{similarProduct.currency + ' ' + formatPrice(getDiscountedPrice(similarProduct))}
                             <span className="ml-2"
-                                style={{"color": "red", textDecoration: 'line-through'}}>{similarProduct.discount > 0 ? similarProduct.currency + ' ' + parseFloat(similarProduct.price).toFixed(2) : ''}</span>
+                                style={{"color": "red", textDecoration: 'line-through'}}>{isPromotionActive(similarProduct) ? similarProduct.currency + ' ' + formatPrice(similarProduct.price) : ''}</span>
                         </div>
                         <p className="small text-muted font-italic">{similarProduct.description}</p>
                         {showRating(similarProduct.rating)}

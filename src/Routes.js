@@ -30,6 +30,7 @@ import Orders from "./admin/Orders";
 import ManageAdminUser from "./admin/ManageAdminUser";
 import ProductByCategory from "./core/ProductByCategory";
 import ProductBySearch from "./core/ProductBySearch";
+import Offers from "./core/Offers";
 
 const Routes = () => {
     return (
@@ -38,6 +39,7 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/shop" exact component={ShopPage} />
+                <Route path="/offers" exact component={Offers} />
                 <Route path="/layout" exact component={Layout} />
                 <Route path="/signup" exact component={Signup} />
                 <Route path="/signin" exact component={Signin} />

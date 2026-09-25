@@ -15,6 +15,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {getAllProducts, deleteSingleProduct} from "./ApiAdmin";
 import Ftr from "../core/Ftr";
 import Pagination from "./Pagination";
+import {getPromotionStatus} from "../core/pricing";
 
 
 const ManageProducts = () => {
@@ -111,6 +112,22 @@ const ManageProducts = () => {
         setCurrentPage(pageNumber);
     }
 
+    const showPromotion = product => {
+        const status = getPromotionStatus(product);
+
+        if (status === 'none') {
+            return <span className="badge badge-secondary">No offer</span>;
+        }
+
+        const badge = status === 'active' ? 'success' : status === 'scheduled' ? 'info' : 'light';
+        return (
+            <div>
+                <span className={`badge badge-${badge}`}>{status}</span>
+                <div><strong>{product.discount}%</strong> {product.promotionTitle}</div>
+            </div>
+        );
+    };
+
 return (
     <div>
     <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Manage Products" description="Update and delete Products">
@@ -126,6 +143,7 @@ return (
                             <th scope="col">Category</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Promotion</th>
                             <th scope="col">Shippable</th>
                             <th scope="col">Product Rating</th>
                             <th scope="col">Update</th>
@@ -148,6 +166,7 @@ return (
                                         : '$ ' + parseFloat(product.price).toFixed(2)}
                                 </strong>
                             </td>
+                            <td>{showPromotion(product)}</td>
                             <td><strong>{product.takeInMethod ? 'Shippable' : 'Not Shippable'}</strong></td>
                             <td style={{textAlign:"left"}}><strong>{showRating(product.rating)}</strong></td>
                             <td>

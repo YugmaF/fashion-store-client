@@ -9,6 +9,14 @@ export const getProducts = (sortBy) => {
         .catch(err => console.log(err))
 };
 
+export const getPromotionalOffers = (limitTo = 12) => {
+    return fetch(`${API}/products/offers?limitTo=${limitTo}`, {
+        method: "GET",
+    })
+        .then(response => response.json())
+        .catch(err => console.log(err))
+};
+
 export const getProductsByCategory = (categoryId) => {
     return fetch(`${API}/product/category/${categoryId}`, {
         method: "GET",

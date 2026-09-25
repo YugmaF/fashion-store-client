@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import {isAuthenticate} from '../auth';
 import DropIn from 'braintree-web-drop-in-react';
 import CashOnDelivery from "./CashOnDelivery";
+import {getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const Checkout = ({products}) => {
     const [data, setData] = useState({
@@ -49,7 +50,10 @@ const Checkout = ({products}) => {
     const getDiscount = () => {
         return products.reduce((currentValue, nextValue) => {
             //current value gets as 0 and add values to current value from next value by looping through array
-            return (nextValue.isChecked ? (parseFloat(currentValue) + parseFloat(nextValue.count) * (parseFloat(nextValue.price)) * parseFloat(nextValue.discount) / 100).toFixed(2) : (parseFloat(currentValue)).toFixed(2));
+            const discount = isPromotionActive(nextValue)
+                ? parseFloat(nextValue.price) - getDiscountedPrice(nextValue)
+                : 0;
+            return (nextValue.isChecked ? (parseFloat(currentValue) + parseFloat(nextValue.count) * discount).toFixed(2) : (parseFloat(currentValue)).toFixed(2));
         }, 0);
     };
 
@@ -88,7 +92,7 @@ const Checkout = ({products}) => {
                 // console.log('send nonce and total to process: ', nonce, getTotal(products))
                 const paymentData = {
                     paymentMethodNonce: nonce,
-                    amount: getTotal(products)
+                    amount: getDiscountedTotal()
                 };
 
                 processPayment(userId, token, paymentData)

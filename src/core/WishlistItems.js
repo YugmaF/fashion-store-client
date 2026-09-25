@@ -6,6 +6,7 @@ import {isAuthenticate} from "../auth";
 import {Link, Redirect} from "react-router-dom";
 import Divider from '@material-ui/core/Divider';
 import {addItem} from "./CartHelper";
+import {formatPrice, getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const WishlistItems = ({
                            product,
@@ -70,12 +71,6 @@ const WishlistItems = ({
         );
     };
 
-    //function to get discount
-    const getDiscountedTotal = () => {
-        console.log(product.category);
-        return (product.price - (product.price * (product.discount) / 100)).toFixed(2);
-    };
-
     //function to add item to cart list
     const addToCart = () => {
         const {token, user} = isAuthenticate();
@@ -132,13 +127,13 @@ const WishlistItems = ({
                                            style={{
                                                fontSize: 18,
                                                marginBottom: 0
-                                           }}>{product.currency} {getDiscountedTotal()}</p>
+                                           }}>{product.currency} {formatPrice(getDiscountedPrice(product))}</p>
 
-                                        <p className="lead font-weight-normal text-black-50 text-lg-right"
+                                        {isPromotionActive(product) && <p className="lead font-weight-normal text-black-50 text-lg-right"
                                            style={{
                                                fontSize: 15,
                                                textDecoration: 'line-through'
-                                           }}>{product.currency} {parseFloat(product.price).toFixed(2)}</p>
+                                           }}>{product.currency} {formatPrice(product.price)}</p>}
                                     </div>
                                     <Divider orientation="vertical" flexItem/>
                                     <div className="col-lg-auto mt-3 text-lg-left">

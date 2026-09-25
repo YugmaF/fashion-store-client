@@ -14,6 +14,7 @@ import RateComponent from "./Rate";
 import CommentComponent from "./CommentComponent";
 import Ftr from "./Ftr";
 import SimilarProducts from "./SimilarProducts";
+import {formatPrice, getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const Product = props => {
 
@@ -118,13 +119,7 @@ const Product = props => {
         ) : ''
     };
 
-    const calculateDiscountedPrice = (product) => {
-        let price = product.price;
-        if (product.currency === '$') {
-            price = product.price * 180;
-        }
-        return product.currency === '$' ? parseFloat((price - ((price * product.discount) / 100)) / 180).toFixed(2) : parseFloat(price - ((price * product.discount) / 100)).toFixed(2);
-    };
+    const activePromotion = isPromotionActive(product);
 
     return <div>
                 <Layout title={product.name} description={product.description} className="container-fluid">
@@ -138,10 +133,20 @@ const Product = props => {
                             <div className="col-lg-5 col-sm-12 mt-5">
                                 <h3 className="text-uppercase">{product.name}</h3>
 
+                                {activePromotion && (
+                                    <div className="product-promotion-summary">
+                                        <span>{product.discount}% OFF</span>
+                                        <strong>{product.promotionTitle || 'Promotional offer'}</strong>
+                                        {product.promotionEnd && (
+                                            <small>Ends {new Date(product.promotionEnd).toLocaleDateString()}</small>
+                                        )}
+                                    </div>
+                                )}
+
                                 <div className="row pl-3">
-                                    <h3 className="red-text mt-3 mr-3 font-weight-bolder">{product.currency} {calculateDiscountedPrice(product)}</h3>
+                                    <h3 className="red-text mt-3 mr-3 font-weight-bolder">{product.currency} {formatPrice(getDiscountedPrice(product))}</h3>
                                     <h3 style={{textDecoration: 'line-through'}}
-                                        className="text-black-50 mt-3 mr-3 font-weight-bolder">{product.discount > 0 ? product.currency + ' ' + parseFloat(product.price).toFixed(2) : ''}</h3>
+                                        className="text-black-50 mt-3 mr-3 font-weight-bolder">{activePromotion ? product.currency + ' ' + formatPrice(product.price) : ''}</h3>
                                 </div>
 
                                 <div className="mt-5">
