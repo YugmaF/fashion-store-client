@@ -24,6 +24,9 @@ const AddProduct = () => {
         image: '',
         loading: false,
         discount: '0.00',
+        promotionTitle: '',
+        promotionStart: '',
+        promotionEnd: '',
         error: false,
         createdProduct: false,
         showSuccess: false,
@@ -42,6 +45,9 @@ const AddProduct = () => {
         takeInMethod,
         loading,
         discount,
+        promotionTitle,
+        promotionStart,
+        promotionEnd,
         error,
         createdProduct,
         showSuccess,
@@ -55,7 +61,10 @@ const AddProduct = () => {
 
     const handleOnChange = (name) => (event) => {
         const value = name === 'image' ? event.target.files[0] : event.target.value;
-        formData.set(name, value);
+        const formValue = (name === 'promotionStart' || name === 'promotionEnd') && value
+            ? new Date(value).toISOString()
+            : value;
+        formData.set(name, formValue);
         setProductValues({...productValues, [name]: value});
     };
 
@@ -95,6 +104,9 @@ const AddProduct = () => {
                             category: '',
                             loading: false,
                             discount: '',
+                            promotionTitle: '',
+                            promotionStart: '',
+                            promotionEnd: '',
                             currency: '',
                             error: false,
                             showSuccess: true,
@@ -225,8 +237,60 @@ const AddProduct = () => {
                                         onChange={handleOnChange('discount')}
                                         className="form-control"
                                         value={discount}
+                                        min="0"
+                                        max="100"
                                     />
                                     <br/>
+                                    <label
+                                        htmlFor="promotionTitle"
+                                        className="grey-text font-weight-light"
+                                    >
+                                        Promotion Title
+                                    </label>
+                                    <input
+                                        id="promotionTitle"
+                                        type="text"
+                                        onChange={handleOnChange('promotionTitle')}
+                                        className="form-control"
+                                        value={promotionTitle}
+                                        placeholder="e.g. Weekend Special"
+                                    />
+                                    <br/>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label
+                                                htmlFor="promotionStart"
+                                                className="grey-text font-weight-light"
+                                            >
+                                                Promotion Starts
+                                            </label>
+                                            <input
+                                                id="promotionStart"
+                                                type="datetime-local"
+                                                onChange={handleOnChange('promotionStart')}
+                                                className="form-control"
+                                                value={promotionStart}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label
+                                                htmlFor="promotionEnd"
+                                                className="grey-text font-weight-light"
+                                            >
+                                                Promotion Ends
+                                            </label>
+                                            <input
+                                                id="promotionEnd"
+                                                type="datetime-local"
+                                                onChange={handleOnChange('promotionEnd')}
+                                                className="form-control"
+                                                value={promotionEnd}
+                                            />
+                                        </div>
+                                    </div>
+                                    <small className="form-text text-muted mb-3">
+                                        Leave dates empty to keep a discount active until it is removed.
+                                    </small>
                                     <label
                                         htmlFor="defaultFormCardNameEx"
                                         className="grey-text font-weight-light"

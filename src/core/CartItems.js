@@ -6,6 +6,7 @@ import {isAuthenticate} from "../auth";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import {Link} from "react-router-dom";
+import {formatPrice, getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const CartItems = ({
                        product,
@@ -139,11 +140,16 @@ const CartItems = ({
                                     <div className="row">
                                         <div className="col-lg-12">
                                             <p className="lead font-weight-normal"
-                                               style={{fontSize: 22}}>{product.currency} {parseFloat(product.price * count).toFixed(2)}</p>
+                                               style={{fontSize: 22}}>{product.currency} {formatPrice(getDiscountedPrice(product) * count)}</p>
                                         </div>
                                         <div className="col-lg-12">
                                             <p className="lead font-weight-normal text-black-50"
-                                               style={{fontSize: 15}}>item: {product.currency}{parseFloat(product.price).toFixed(2)}</p>
+                                               style={{fontSize: 15}}>item: {product.currency} {formatPrice(getDiscountedPrice(product))}</p>
+                                            {isPromotionActive(product) && (
+                                                <p className="text-danger" style={{fontSize: 13}}>
+                                                    {product.discount}% promotional offer applied
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
