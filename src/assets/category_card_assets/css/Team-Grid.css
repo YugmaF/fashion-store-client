@@ -52,20 +52,19 @@
 
 .team-grid .item .cover {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(31,148,255,0.75);
-  transition: opacity 0.15s ease-in;
-  opacity: 0;
-  padding-top: 80px;
+  min-height: 72px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.82));
+  transition: min-height 0.15s ease-in;
+  padding: 38px 12px 12px;
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.15);
 }
 
 .team-grid .item:hover .cover {
-  opacity: 1;
+  min-height: 100%;
 }
 
 .team-grid .item .name {
@@ -76,10 +75,10 @@
 .team-grid .item .title {
   text-transform: uppercase;
   font-weight: bold;
-  color: #bbd8fb;
+  color: #fff;
   letter-spacing: 2px;
   font-size: 13px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .team-grid .social {
@@ -96,4 +95,3 @@
 .team-grid .social a:hover {
   opacity: 1;
 }
-

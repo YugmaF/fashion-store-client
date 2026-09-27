@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
 import {isAuthenticate} from "../auth";
@@ -8,10 +8,11 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import CircularProgress from "@material-ui/core/CircularProgress"; // Import css
 
 const RateComponent = (props) => {
+    const [ratings, setRatings] = useState([]);
+    const [submitting, setSubmitting] = useState(false);
 
-    const [enableRating, setEnableRating] = useState(true);
     const getAverageRating = (rating) => {
-        if(rating){
+        if (Array.isArray(rating) && rating.length > 0) {
             const votedCount = rating.length;
             let rateSum = 0;
             rating.forEach(rate => {
@@ -19,27 +20,48 @@ const RateComponent = (props) => {
             });
             return Math.ceil(rateSum / votedCount);
         }
-    }
+        return 0;
+    };
+
+    useEffect(() => {
+        setRatings(Array.isArray(props.product.rating) ? props.product.rating : []);
+    }, [props.product.rating]);
 
     const onRateClicked = (rate) => {
-        setEnableRating(false);
-        const {token, user} = isAuthenticate();
-        if (user != null) {
-            addRating(user._id, token, props.product._id, rate.rating).then(data => {
-                if (data.error) {
-                    console.log(data.error);
-                }else{
-                    setEnableRating(true);
-                    confirmAlertMessage();
-                }
-            });
-        }
-    }
+        const authentication = isAuthenticate();
 
-    const confirmAlertMessage = () => {
+        if (!authentication || !authentication.user) {
+            confirmAlertMessage('Sign In Required', 'Please sign in before rating a product.');
+            return;
+        }
+
+        if (!props.product._id) {
+            return;
+        }
+
+        setSubmitting(true);
+        addRating(
+            authentication.user._id,
+            authentication.token,
+            props.product._id,
+            rate.rating
+        ).then(data => {
+            if (!data || data.error) {
+                confirmAlertMessage('Rating Not Submitted', data && data.error
+                    ? data.error
+                    : 'Please try again.');
+                return;
+            }
+
+            setRatings(Array.isArray(data.rating) ? data.rating : [...ratings, rate.rating]);
+            confirmAlertMessage('Thank You!', 'Successfully submitted your rating.');
+        }).finally(() => setSubmitting(false));
+    };
+
+    const confirmAlertMessage = (title, message) => {
         confirmAlert({
-            title: 'Thank For Your Support!',
-            message: 'Successfully Submitted Your Rating',
+            title,
+            message,
             buttons: [
                 {
                     label: 'Close',
@@ -50,11 +72,15 @@ const RateComponent = (props) => {
 
     return(
         <div>
-            <Rater total={5} interactive={enableRating} rating={getAverageRating(props.product.rating) ? getAverageRating(props.product.rating) : 0} onRate={onRateClicked}/>
-            {!enableRating ? <CircularProgress className="ml-4" size={30}/> : ''}
+            <Rater
+                total={5}
+                interactive={!submitting && Boolean(props.product._id)}
+                rating={getAverageRating(ratings)}
+                onRate={onRateClicked}
+            />
+            {submitting ? <CircularProgress className="ml-4" size={30}/> : ''}
         </div>
     );
 };
 
 export default RateComponent;
-

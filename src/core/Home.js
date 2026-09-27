@@ -8,7 +8,8 @@ import {Link} from "react-router-dom";
 //images for carousel
 import image1 from '../images/image5.jpg';
 import image2 from '../images/image3.jpg';
-import image3 from '../images/image4.jpg';
+import image3 from '../images/image2.jpg';
+import image4 from '../images/image4.jpg';
 
 //Mui stuff
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -55,40 +56,33 @@ const Home = () => {
                 <div>
                     <NavBar/>
                     <div className="mb-5">
-                        <Carousel>
+                        <Carousel interval={6000}>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
                                     src={image1}
-                                    alt="First slide"
+                                    alt="Featured fashion collection"
                                 />
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
                                     src={image2}
-                                    alt="First slide"
+                                    alt="Seasonal fashion arrivals"
                                 />
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
-                                    src="https://ikon.lk/wp-content/uploads/2020/01/3-01.jpg"
-                                    alt="Third slide"
+                                    src={image3}
+                                    alt="Everyday fashion essentials"
                                 />
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
-                                    src="https://www.fashionbug.lk/wp-content/uploads/2019/10/Fbug_Web_compressed.jpg"
-                                    alt="Third slide"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img
-                                    className="d-block w-100"
-                                    src="https://gdetail.image-gmkt.com/296/306/833306296/2017/9/effe5977-bc4d-4cba-9d04-ab8267eae451.gif"
-                                    alt="Fourth slide"
+                                    src={image4}
+                                    alt="New fashion styles"
                                 />
                             </Carousel.Item>
                         </Carousel>
