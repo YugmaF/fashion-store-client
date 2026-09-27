@@ -10,6 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress"; // Import css
 const RateComponent = (props) => {
     const [ratings, setRatings] = useState([]);
     const [submitting, setSubmitting] = useState(false);
+    const [raterKey, setRaterKey] = useState(0);
 
     const getAverageRating = (rating) => {
         if (Array.isArray(rating) && rating.length > 0) {
@@ -31,6 +32,7 @@ const RateComponent = (props) => {
         const authentication = isAuthenticate();
 
         if (!authentication || !authentication.user) {
+            setRaterKey(currentKey => currentKey + 1);
             confirmAlertMessage('Sign In Required', 'Please sign in before rating a product.');
             return;
         }
@@ -47,6 +49,7 @@ const RateComponent = (props) => {
             rate.rating
         ).then(data => {
             if (!data || data.error) {
+                setRaterKey(currentKey => currentKey + 1);
                 confirmAlertMessage('Rating Not Submitted', data && data.error
                     ? data.error
                     : 'Please try again.');
@@ -73,6 +76,7 @@ const RateComponent = (props) => {
     return(
         <div>
             <Rater
+                key={raterKey}
                 total={5}
                 interactive={!submitting && Boolean(props.product._id)}
                 rating={getAverageRating(ratings)}

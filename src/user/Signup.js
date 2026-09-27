@@ -164,7 +164,6 @@ const Signup = () => {
                             sitekey={recaptchaSiteKey}
                             render="explicit"
                             verifyCallback={verifyCallback}
-                            onloadCallback={recaptchaLoaded}
                         />
 
                         <br/>
@@ -192,8 +191,6 @@ const Signup = () => {
 
 
     );
-    const recaptchaLoaded = () => {};
-
     const verifyCallback = (response) => {
         if (response) {
             setRecaptchaVerified(true);
