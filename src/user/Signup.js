@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Layout from "../core/Layout";
 import {signup} from "../auth";
 import Recaptcha from 'react-recaptcha';
 import Grid from "@material-ui/core/Grid";
@@ -19,8 +18,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://quarantinefashionstore.herokuapp.com/">
-                QuarantineFashionStore.herokuapp.com
+            <Link color="inherit" href="https://fashion-store-5827.onrender.com/">
+                Fashion Store
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -71,8 +70,10 @@ const Signup = () => {
         success: false
     });
 
-    const [recaptchaVerfied, setRecaptchaVerified] = useState(false);
-    let [recaptchaKey, setRecaptchaKey] = useState(0);
+    const [recaptchaVerified, setRecaptchaVerified] = useState(false);
+    const [recaptchaKey, setRecaptchaKey] = useState(0);
+    const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
+        || '6LcZZPUUAAAAAIlxCF98ooQ_SCWA5yOvXwjd1q8S';
 
     const {name, email, password, success, error} = values;
 
@@ -83,15 +84,14 @@ const Signup = () => {
     const clickSubmit = (event) => {
         event.preventDefault();
         setValues({...values, error: false});
-        if (recaptchaVerfied) {
+        if (recaptchaVerified) {
             signup({name, email, password})
                 .then(data => {
                     if (data.error) {
                         setValues({...values, error: data.error, success: false});
                     } else {
-                        const key = ++recaptchaKey;
-                        console.log(recaptchaKey);
-                        setRecaptchaKey(key);
+                        setRecaptchaKey(currentKey => currentKey + 1);
+                        setRecaptchaVerified(false);
                         setValues({...values, name: '', email: '', password: '', error: '', success: true});
                     }
                 });
@@ -161,10 +161,9 @@ const Signup = () => {
                         />
                         <Recaptcha
                             key={recaptchaKey}
-                            sitekey="6LcZZPUUAAAAAIlxCF98ooQ_SCWA5yOvXwjd1q8S"
+                            sitekey={recaptchaSiteKey}
                             render="explicit"
                             verifyCallback={verifyCallback}
-                            onloadCallback={recaptchaLoaded()}
                         />
 
                         <br/>
@@ -184,7 +183,7 @@ const Signup = () => {
                             <Copyright/>
                         </Box>
                     </form>
-                    <img className="mt-3" src={Logo}/>
+                    <img className="mt-3" src={Logo} alt="Fashion Store"/>
                 </div>
             </Grid>
         </Grid>
@@ -192,19 +191,11 @@ const Signup = () => {
 
 
     );
-    //when in the production, change domain name "localhost" to actual domain name
-    // Site key - 6LcZZPUUAAAAAIlxCF98ooQ_SCWA5yOvXwjd1q8S
-    // secret key - 6LcZZPUUAAAAAGk8BYDGhx7-Kf5wyHjzPF49cqad
-    const recaptchaLoaded = () => {
-        console.log("recaptcha successfully loaded!");
-    }
-
     const verifyCallback = (response) => {
         if (response) {
             setRecaptchaVerified(true);
-            // setValues({...values, error: '', success: false})
         }
-    }
+    };
 
     return (
         <div>
