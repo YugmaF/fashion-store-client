@@ -1,20 +1,13 @@
-import React, {useEffect, useState, Fragment} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
-import {Link} from "react-router-dom";
-import "mdbreact/dist/css/mdb.css";
 import {createCategory} from "./ApiAdmin";
-import {MDBContainer, MDBAlert} from 'mdbreact';
-import {MDBDataTable} from 'mdbreact';
 import {getAllCategories} from "../core/apiCore";
-import {MDBBtn} from "mdbreact";
-import Ftr from "../core/Ftr";
 import {confirmAlert} from "react-confirm-alert";
 
 const AddCategory = () => {
     const [name, setName] = useState('');
     const [error, setError] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [loader, setLoader] = useState(false);
     const [categories, setCategories] = useState([]);
     const [errorCat, setErrorCat] = useState(false);
@@ -32,6 +25,7 @@ const AddCategory = () => {
 
     useEffect(() => {
         loadCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //get user and info from local storage
@@ -47,7 +41,6 @@ const AddCategory = () => {
         event.preventDefault();
         setLoader(true);
         setError(false);
-        setSuccess(false);
         //create category
         //use api request
         createCategory(user._id, token, {name})
@@ -56,7 +49,6 @@ const AddCategory = () => {
                 setName('');
                 if (data.error) {
                     setError(true);
-                    setSuccess(false);
                     confirmAlert({
                         title: 'Name should be unique',
                         buttons: [
@@ -67,7 +59,6 @@ const AddCategory = () => {
                     });
                 } else {
                     setError(false);
-                    setSuccess(true);
                     loadCategories();
                     confirmAlert({
                         title: 'New category is created successfully!',
@@ -82,80 +73,54 @@ const AddCategory = () => {
 
     };
 
-    const categoryTable = () => {
-        if (categories.length > 0) {
-            const data = {
-                columns: [
-                    {
-                        label: 'ID',
-                        field: '_id',
-                        sort: 'asc',
-                        width: 200
-                    },
-                    {
-                        label: 'Name',
-                        field: 'name',
-                        sort: 'asc',
-                        width: 270
-                    },
-                    {
-                        label: 'Created At',
-                        field: 'createdAt',
-                        sort: 'asc',
-                        width: 200
-                    },
-                    {
-                        label: 'Updated At',
-                        field: 'updatedAt',
-                        sort: 'asc',
-                        width: 100
-                    }
-                ], rows: categories
-            };
-
-            return (
-                <div className="container-fluid col-md-12 col-lg-12 col-sm-12">
-                    <MDBDataTable
-                        striped
-                        bordered
-                        hover
-                        responsive
-                        data={data}
-                    />
-                </div>
-            );
-
-        } else {
-            return null;
-        }
-    };
-
-    const newCategoryForm = () => (
-        <div className="col-md-8 col-sm-8 col-lg-8 container-fluid">
-            <form onSubmit={submit}>
-                <div className="form-group">
-                    <label className="text-muted">Category Name</label>
-                    <input type="text" className="form-control" onChange={handleChange} value={name} autoFocus
-                           required/>
-                </div>
-                <div className="form-group">
-                    <button className="btn btn-primary"
-                            disabled={loader}>{loader ? 'Loading...' : 'Create Category'}</button>
-                </div>
-            </form>
-        </div>
-    );
-
     return (
-     <div>
-        <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Add new category" description={`Welcome back ${user.name}, Add a new category now!`}
-                className="container-fluid">
-            {newCategoryForm()}
-            <hr/>
-            {categoryTable()}
-        </Layout>
-         <Ftr/>
-     </div>
+        <AdminLayout backTo="/admin/dashboard" backText="Back to dashboard" title="Add new category" description={`Welcome back ${user.name}, add a new category now!`}>
+            <div className="admin-card">
+                <div className="admin-card-body">
+                    {error && <div className="admin-alert admin-alert-danger"><strong>Name should be unique!</strong></div>}
+                    <form className="admin-form" onSubmit={submit}>
+                        <div className="admin-form-group">
+                            <label className="admin-form-label">Category Name</label>
+                            <input type="text" className="form-control" onChange={handleChange} value={name} autoFocus
+                                   required/>
+                        </div>
+                        <button className="admin-btn admin-btn-primary" disabled={loader}>
+                            {loader ? 'Loading...' : 'Create Category'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {categories.length > 0 && (
+                <div className="admin-card">
+                    <div className="admin-table-toolbar">
+                        <span className="admin-table-count">Total of {categories.length} categories</span>
+                    </div>
+                    <div className="admin-table-scroll">
+                        <table className="admin-table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Updated At</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {categories.map(category => (
+                                <tr key={category._id}>
+                                    <th scope="row" className="admin-id">{category._id}</th>
+                                    <td><strong>{category.name}</strong></td>
+                                    <td>{category.createdAt}</td>
+                                    <td>{category.updatedAt}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+        </AdminLayout>
     );
 };
 

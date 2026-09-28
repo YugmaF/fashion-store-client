@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from "react";
-import Layout from "../core/Layout";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
-import {Link} from "react-router-dom";
 import {listOrders, getStatusValues, updateOrderStatus} from "./ApiAdmin";
 import moment from 'moment';
-import Ftr from "../core/Ftr";
-import {MDBBtn} from "mdbreact";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -38,27 +35,8 @@ const Orders = () => {
   useEffect(() => {
     loadOrders();
     loadStatusValues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const showOrdersLength = () => {
-    if(orders.length > 0){
-      return(
-          <h6 className="text-danger display-4">Total online orders : {orders.length}</h6>
-      )
-    }
-    else {
-      return <h1 className="text-danger mb-5">No online orders!</h1>;
-    }
-  };
-
-  const showInput = (key, value) => (
-      <div className="input-group mb-2 mr-sm-2">
-        <div className="input-group-prepend">
-          <div className="input-group-text">{key}</div>
-        </div>
-        <input type="text" value={value} className="form-control" readOnly/>
-      </div>
-  );
 
   const handleStatusChange = (e, orderId) => {
     updateOrderStatus(user._id, token, orderId, e.target.value)
@@ -72,61 +50,58 @@ const Orders = () => {
         })
   };
 
-  const showStatus = ord => (
-    <div className="form-group">
-      <h3 className="mark mb-4">Status: {ord.status}</h3>
-      <select className="form-control" onChange={(e) => handleStatusChange(e, ord._id)}>
-        <option>Update Status</option>
-        {statusValues.map((status, index) => (
-            <option key={index} value={status}>
-              {status}
-            </option>
-        ))}
-      </select>
-    </div>
-  );
-
   return (
-      <div>
-      <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Orders" description={`Welcome back ${user.name}, you may manage all the online orders here!`}
-              className="container-fluid">
-        <div className="row">
-          <div className="col-md-8 offset-md-2">
-            {showOrdersLength()}
+      <AdminLayout backTo="/admin/dashboard" backText="Back to dashboard" title="Orders"
+              description={`Welcome back ${user.name}, manage all online orders here!`}>
+        <div className="admin-card">
+          <div className="admin-table-toolbar">
+            <span className="admin-table-count">Total online orders: {orders.length}</span>
+          </div>
+          <div className="admin-card-body">
+            {orders.length === 0 && (
+                <div className="admin-empty">No online orders yet.</div>
+            )}
+            {orders.map((ord, ordIndex) => (
+                <div className="admin-order-card" key={ordIndex}>
+                  <div className="admin-order-id">Order ID: <span className="admin-id">{ord._id}</span></div>
 
-            {orders.map((ord, ordIndex) => {
-              return(
-                  <div className="mt-5" key={ordIndex} style={{borderBottom: "5px solid indigo"}}>
-                    <h2 className="mb-5">
-                      <span className="bg-primary">Order ID: {ord._id}</span>
-                    </h2>
-                    <ul className="list-group mb-2">
-                      <li className="list-group-item">{showStatus(ord)}</li>
-                      <li className="list-group-item">Transaction ID: {ord.transaction_id}</li>
-                      <li className="list-group-item">Price: ${ord.amount}</li>
-                      <li className="list-group-item">Ordered By: {ord.user.name}</li>
-                      <li className="list-group-item">Ordered On: {moment(ord.createdAt).fromNow()}</li>
-                      <li className="list-group-item">Delivery Address: {ord.address}</li>
-                    </ul>
-                    <h3 className="mt-4 mb-4 font-italic">
-                      Total Products in the Order: {ord.products.length}
-                    </h3>
+                  <div className="admin-form-group" style={{maxWidth: 260, marginTop: 12}}>
+                    <label className="admin-form-label">Status: {ord.status}</label>
+                    <select className="form-control" onChange={(e) => handleStatusChange(e, ord._id)}>
+                      <option>Update Status</option>
+                      {statusValues.map((status, index) => (
+                          <option key={index} value={status}>
+                            {status}
+                          </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="admin-order-meta-row">
+                    <span>Transaction ID: <strong>{ord.transaction_id}</strong></span>
+                    <span>Price: <strong>${ord.amount}</strong></span>
+                    <span>Ordered by: <strong>{ord.user.name}</strong></span>
+                    <span>Ordered: <strong>{moment(ord.createdAt).fromNow()}</strong></span>
+                    <span>Delivery address: <strong>{ord.address}</strong></span>
+                  </div>
+
+                  <div className="admin-form-label" style={{marginTop: 12}}>
+                    Products in this order: {ord.products.length}
+                  </div>
+                  <div className="admin-order-products">
                     {ord.products.map((prod, prodIndex) => (
-                        <div className="mb-4" key={prodIndex} style={{padding: '20px', border: '1px solid indigo'}}>
-                          {showInput('Product Name', prod.name)}
-                          {showInput('Product Price', prod.price)}
-                          {showInput('Product Total', prod.count)}
-                          {showInput('Product ID', prod._id)}
+                        <div className="admin-order-product" key={prodIndex}>
+                          <dt>Name</dt><dd>{prod.name}</dd>
+                          <dt>Price</dt><dd>{prod.price}</dd>
+                          <dt>Qty</dt><dd>{prod.count}</dd>
                         </div>
                     ))}
                   </div>
-              );
-            })}
+                </div>
+            ))}
           </div>
         </div>
-      </Layout>
-        <Ftr/>
-      </div>
+      </AdminLayout>
   );
 
 };

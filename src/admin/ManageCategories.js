@@ -1,12 +1,9 @@
-import React, {useEffect, useState, Fragment} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
 import {Link} from "react-router-dom";
-import "mdbreact/dist/css/mdb.css";
 import { confirmAlert } from 'react-confirm-alert';
-import CircularProgress from "@material-ui/core/CircularProgress";
 import {getAllCategories, deleteSingleCategory} from "./ApiAdmin";
-import Ftr from "../core/Ftr";
 import Pagination from "./Pagination";
 
 const ManageCategories = () => {
@@ -14,7 +11,7 @@ const ManageCategories = () => {
     const [categories, setAllCategories] = useState([]);
     const {user, token} = isAuthenticate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(10);
     //get Current item
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
@@ -39,7 +36,7 @@ const ManageCategories = () => {
                 {
                     label: 'Yes',
                     onClick: () => {
-                        deleteSingleCategory(categoryId, user._id, token). then(data => {
+                        deleteSingleCategory(categoryId, user._id, token).then(data => {
                             if(data.error){
                                 console.log(data.error)
                             } else {
@@ -72,14 +69,14 @@ const ManageCategories = () => {
     }
 
     return (
-        <div>
-        <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Manage Categories" description="Update and delete Categories">
-            <div className="row ml-4 mr-4 mb-5">
-                <div className="col-12 table-responsive">
-                    <h2 className="text-center"> Total of {categories.length} Categories </h2>
-                    <hr/>
-                    <table id="categoryTable" className="table table-hover text-center" >
-                        <thead className="thead-dark">
+        <AdminLayout backTo="/admin/dashboard" backText="Back to dashboard" title="Manage Categories" description="Update and delete categories">
+            <div className="admin-card">
+                <div className="admin-table-toolbar">
+                    <span className="admin-table-count">Total of {categories.length} categories</span>
+                </div>
+                <div className="admin-table-scroll">
+                    <table id="categoryTable" className="admin-table">
+                        <thead>
                         <tr>
                             <th scope="col">Category Id</th>
                             <th scope="col">Category Name</th>
@@ -90,75 +87,35 @@ const ManageCategories = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {getCurrentItem.map((category, item) => (
+                        {getCurrentItem.map((category) => (
                             <tr key={category._id}>
-                                <th scope="row">{category._id}</th>
+                                <th scope="row" className="admin-id">{category._id}</th>
                                 <td><strong>{category.name}</strong></td>
-                                <td><strong>{category.createdAt}</strong></td>
-                                <td><strong>{category.updatedAt}</strong></td>
+                                <td>{category.createdAt}</td>
+                                <td>{category.updatedAt}</td>
                                 <td>
                                     <Link to={`/admin/category/update/${category._id}`}>
-                                        <button className="btn btn-sm btn-warning"  >
-                                            Update Category
+                                        <button className="admin-btn admin-btn-warning admin-btn-sm">
+                                            Update
                                         </button>
                                     </Link>
                                 </td>
                                 <td>
-                                    <button onClick={() => remove(category._id)} className="btn btn-sm btn-danger">
-                                        Delete Category
+                                    <button onClick={() => remove(category._id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                                        Delete
                                     </button>
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
-                    <br/>
                     <Pagination itemsPerPage={itemsPerPage} totalItems={categories.length} currentPage={currentPage} paginate={paginate}/>
                 </div>
             </div>
-
-            {/*<h2 className="mb-4">Manage Categories</h2>*/}
-            {/*<div className="row">*/}
-            {/*    <div className="col-12">*/}
-            {/*        <h2 className="text-center"> Total of {categories.length} Categories </h2>*/}
-            {/*        <ul className="list-group">*/}
-            {/*            {categories.map((category, item) => (*/}
-            {/*                <li*/}
-            {/*                    key={item}*/}
-            {/*                    className="list-group-item d-flex justify-content-between align-items-center">*/}
-            {/*                    <div className="container">*/}
-            {/*                        <div className="row">*/}
-            {/*                            <div className="col-sm">*/}
-            {/*                                <strong>{category.name}</strong>*/}
-            {/*                            </div>*/}
-            {/*                            <div className="col-sm">*/}
-            {/*                                <Link to={`/admin/category/update/${category._id}`}>*/}
-            {/*                                    <button className="badge badge-warning badge-pill "  >*/}
-            {/*                                        Update Category*/}
-            {/*                                    </button>*/}
-            {/*                                </Link>*/}
-            {/*                            </div>*/}
-            {/*                            <div className="col-sm">*/}
-            {/*                                <button onClick={() => remove(category._id)} className="badge badge-danger badge-pill">*/}
-            {/*                                    Delete Category*/}
-            {/*                                </button>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                </li>*/}
-
-            {/*            ))}*/}
-            {/*        </ul>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-        </Layout>
-        <Ftr/>
-        </div>
-
+        </AdminLayout>
     );
 
 };
 
 
 export default ManageCategories;
-
