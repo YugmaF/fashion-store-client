@@ -102,7 +102,7 @@ const Card = ({
                         <ShowImage item={product} url="product"/>
                     </Link>
                     <p className="lead font-weight-bold">{product.name}</p>
-                    <p className="black-9">{product.currency} {parseFloat(product.price).toFixed(2)}</p>
+                    <p className="black-9">{product.currency} {Number.parseFloat(product.price).toFixed(2)}</p>
                     <p className="black-8">
                         Category: {product.category && product.category.name} </p>
 

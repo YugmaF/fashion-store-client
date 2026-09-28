@@ -147,7 +147,7 @@ return (
                             <th scope="col">Shippable</th>
                             <th scope="col">Product Rating</th>
                             <th scope="col">Update</th>
-                            {(parseInt(user.role) === 1) && (
+                            {(Number.parseInt(user.role) === 1) && (
                             <th scope="col">Delete</th>
                             )}
                         </tr>
@@ -162,8 +162,8 @@ return (
                             <td style={{textAlign:"right"}}>
                                 <strong>
                                     {product.currency === 'Rs' ? 'Rs. '
-                                        + parseFloat(product.price).toFixed(2)
-                                        : '$ ' + parseFloat(product.price).toFixed(2)}
+                                        + Number.parseFloat(product.price).toFixed(2)
+                                        : '$ ' + Number.parseFloat(product.price).toFixed(2)}
                                 </strong>
                             </td>
                             <td>{showPromotion(product)}</td>
@@ -176,7 +176,7 @@ return (
                                     </button>
                                 </Link>
                             </td>
-                            {(parseInt(user.role) === 1) && (
+                            {(Number.parseInt(user.role) === 1) && (
                                 <td>
                                     <button onClick={() => remove(product._id)} className="btn btn-sm btn-danger">
                                         Delete Product
