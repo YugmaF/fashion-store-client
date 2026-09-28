@@ -1,15 +1,8 @@
-import React, {useEffect, useState, Fragment} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
-import {Link} from "react-router-dom";
-import "mdbreact/dist/css/mdb.css";
-import {createCategory} from "./ApiAdmin";
-import {MDBContainer, MDBAlert} from 'mdbreact';
-import {MDBDataTable} from 'mdbreact';
 import {getAllCategories} from "../core/apiCore";
-import {MDBBtn} from "mdbreact";
 import {getSingleCategory, updateSingleCategory} from "./ApiAdmin";
-import Ftr from "../core/Ftr";
 import {confirmAlert} from "react-confirm-alert";
 
 const UpdateCategory = ({match}) => {
@@ -44,7 +37,7 @@ const UpdateCategory = ({match}) => {
     useEffect(() => {
         loadCategories();
         init(match.params.categoryId);
-        console.log(match.params.categoryId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //get user and info from local storage
@@ -95,102 +88,55 @@ const UpdateCategory = ({match}) => {
 
     };
 
-    const showSuccessMsg = () => {
-        if (success) {
-            return (
-                <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>category is Updated successfully!</strong>
-                </div>
-            );
-        }
-    };
-
-    const categoryTable = () => {
-        if (categories.length > 0) {
-            const data = {
-                columns: [
-                    {
-                        label: 'ID',
-                        field: '_id',
-                        sort: 'asc',
-                        width: 200
-                    },
-                    {
-                        label: 'Name',
-                        field: 'name',
-                        sort: 'asc',
-                        width: 270
-                    },
-                    {
-                        label: 'Created At',
-                        field: 'createdAt',
-                        sort: 'asc',
-                        width: 200
-                    },
-                    {
-                        label: 'Updated At',
-                        field: 'updatedAt',
-                        sort: 'asc',
-                        width: 100
-                    }
-                ], rows: categories
-            };
-
-            return (
-                <div className="container-fluid col-md-12 col-lg-12 col-sm-12">
-                    <MDBDataTable
-                        striped
-                        bordered
-                        hover
-                        responsive
-                        data={data}
-                    />
-                </div>
-            );
-
-        } else {
-            return null;
-        }
-    };
-
-    const showErrorMsg = () => {
-        if (error) {
-            return (
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Name</strong> should be unique!
-                </div>
-            );
-        }
-    };
-
-    const updateCategoryForm = () => (
-        <div className="col-md-8 col-sm-8 col-lg-8 container-fluid">
-            <form onSubmit={submit}>
-                <div className="form-group">
-                    <label className="text-muted">Category Name</label>
-                    <input type="text" className="form-control" onChange={handleChange} value={name} autoFocus
-                           required/>
-                </div>
-                <div className="form-group">
-                    <button className="btn btn-primary"
-                            disabled={loader}>{loader ? 'Loading...' : 'Update Category'}</button>
-                </div>
-            </form>
-        </div>
-    );
-
     return (
-        <div>
-        <Layout back={true} backText="Back to Manage Category" to="/admin/categories" title="Update category" description={`Welcome back ${user.name}, Update Category now`}
-                className="container-fluid">
-            {showSuccessMsg()}
-            {showErrorMsg()}
-            {updateCategoryForm()}
-            <hr/>
-            {categoryTable()}
-        </Layout>
-        <Ftr/>
-        </div>
+        <AdminLayout backTo="/admin/categories" backText="Back to manage categories" title="Update category" description={`Welcome back ${user.name}, update category now`}>
+            <div className="admin-card">
+                <div className="admin-card-body">
+                    {success && <div className="admin-alert admin-alert-success"><strong>Category is updated successfully!</strong></div>}
+                    {error && <div className="admin-alert admin-alert-danger"><strong>Name</strong> should be unique!</div>}
+                    <form className="admin-form" onSubmit={submit}>
+                        <div className="admin-form-group">
+                            <label className="admin-form-label">Category Name</label>
+                            <input type="text" className="form-control" onChange={handleChange} value={name} autoFocus
+                                   required/>
+                        </div>
+                        <button className="admin-btn admin-btn-primary" disabled={loader}>
+                            {loader ? 'Loading...' : 'Update Category'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {categories.length > 0 && (
+                <div className="admin-card">
+                    <div className="admin-table-toolbar">
+                        <span className="admin-table-count">Total of {categories.length} categories</span>
+                    </div>
+                    <div className="admin-table-scroll">
+                        <table className="admin-table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Updated At</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {categories.map(category => (
+                                <tr key={category._id}>
+                                    <th scope="row" className="admin-id">{category._id}</th>
+                                    <td><strong>{category.name}</strong></td>
+                                    <td>{category.createdAt}</td>
+                                    <td>{category.updatedAt}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+        </AdminLayout>
     );
 };
 

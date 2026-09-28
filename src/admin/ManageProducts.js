@@ -1,19 +1,9 @@
-import React, {useEffect, useState, Fragment} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
 import {Link} from "react-router-dom";
-import "mdbreact/dist/css/mdb.css";
 import { confirmAlert } from 'react-confirm-alert';
-import {createCategory} from "./ApiAdmin";
-import {MDBContainer, MDBAlert} from 'mdbreact';
-import {MDBDataTable} from 'mdbreact';
-import {getAllCategories} from "../core/apiCore";
-import {MDBBtn} from "mdbreact";
-import Card from "../core/Card";
-import FooterPage from "../core/Footer";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import {getAllProducts, deleteSingleProduct} from "./ApiAdmin";
-import Ftr from "../core/Ftr";
 import Pagination from "./Pagination";
 import {getPromotionStatus} from "../core/pricing";
 
@@ -24,7 +14,7 @@ const ManageProducts = () => {
 
     const {user, token} = isAuthenticate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(10);
     //get Current item
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
@@ -54,13 +44,13 @@ const ManageProducts = () => {
             for (let i = averageRating; i < 5; i++)
                 startArray.push(<li key={i} className="fa fa-star-o fa-lg"></li>);
             return (
-                <ul className="rating">
+                <ul className="admin-rating">
                     {startArray}
                 </ul>
             );
         } else {
             return (
-                <ul className="rating">
+                <ul className="admin-rating">
                     <li key={1} className="fa fa-star fa-lg"></li>
                     <li key={2} className="fa fa-star-o fa-lg"></li>
                     <li key={3} className="fa fa-star-o fa-lg"></li>
@@ -80,7 +70,7 @@ const ManageProducts = () => {
                 {
                     label: 'Yes',
                     onClick: () => {
-                        deleteSingleProduct(productId, user._id, token). then(data => {
+                        deleteSingleProduct(productId, user._id, token).then(data => {
                             if(data.error){
                                 console.log(data.error)
                             } else {
@@ -116,27 +106,28 @@ const ManageProducts = () => {
         const status = getPromotionStatus(product);
 
         if (status === 'none') {
-            return <span className="badge badge-secondary">No offer</span>;
+            return <span className="admin-badge admin-badge-neutral">No offer</span>;
         }
 
-        const badge = status === 'active' ? 'success' : status === 'scheduled' ? 'info' : 'light';
+        const badgeClass = status === 'active' ? 'admin-badge-success'
+            : status === 'scheduled' ? 'admin-badge-info' : 'admin-badge-neutral';
         return (
             <div>
-                <span className={`badge badge-${badge}`}>{status}</span>
+                <span className={`admin-badge ${badgeClass}`}>{status}</span>
                 <div><strong>{product.discount}%</strong> {product.promotionTitle}</div>
             </div>
         );
     };
 
 return (
-    <div>
-    <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Manage Products" description="Update and delete Products">
-        <div className="row ml-4 mr-4 mb-5">
-            <div className="col-12 table-responsive">
-                <h2 className="text-center"> Total of {products.length} Products </h2>
-                <hr/>
-                <table className="table table-hover text-center" >
-                    <thead className="thead-dark">
+    <AdminLayout backTo="/admin/dashboard" backText="Back to dashboard" title="Manage Products" description="Update and delete products">
+        <div className="admin-card">
+            <div className="admin-table-toolbar">
+                <span className="admin-table-count">Total of {products.length} products</span>
+            </div>
+            <div className="admin-table-scroll">
+                <table className="admin-table">
+                    <thead>
                         <tr>
                             <th scope="col">Product Id</th>
                             <th scope="col">Product Name</th>
@@ -145,7 +136,7 @@ return (
                             <th scope="col">Price</th>
                             <th scope="col">Promotion</th>
                             <th scope="col">Shippable</th>
-                            <th scope="col">Product Rating</th>
+                            <th scope="col">Rating</th>
                             <th scope="col">Update</th>
                             {(Number.parseInt(user.role) === 1) && (
                             <th scope="col">Delete</th>
@@ -153,33 +144,31 @@ return (
                         </tr>
                     </thead>
                     <tbody>
-                    {getCurrentItem.map((product, item) => (
+                    {getCurrentItem.map((product) => (
                         <tr key={product._id}>
-                            <th scope="row">{product._id}</th>
+                            <th scope="row" className="admin-id">{product._id}</th>
                             <td><strong>{product.name}</strong></td>
-                            <td><strong>{product.category.name}</strong></td>
-                            <td style={{textAlign:"right"}}><strong>{product.quantity}</strong></td>
-                            <td style={{textAlign:"right"}}>
-                                <strong>
-                                    {product.currency === 'Rs' ? 'Rs. '
-                                        + Number.parseFloat(product.price).toFixed(2)
-                                        : '$ ' + Number.parseFloat(product.price).toFixed(2)}
-                                </strong>
+                            <td>{product.category.name}</td>
+                            <td>{product.quantity}</td>
+                            <td>
+                                {product.currency === 'Rs' ? 'Rs. '
+                                    + Number.parseFloat(product.price).toFixed(2)
+                                    : '$ ' + Number.parseFloat(product.price).toFixed(2)}
                             </td>
                             <td>{showPromotion(product)}</td>
-                            <td><strong>{product.takeInMethod ? 'Shippable' : 'Not Shippable'}</strong></td>
-                            <td style={{textAlign:"left"}}><strong>{showRating(product.rating)}</strong></td>
+                            <td>{product.takeInMethod ? 'Shippable' : 'Not Shippable'}</td>
+                            <td>{showRating(product.rating)}</td>
                             <td>
                                 <Link to={`/admin/product/update/${product._id}`}>
-                                    <button className="btn btn-sm btn-warning"  >
-                                        Update Product
+                                    <button className="admin-btn admin-btn-warning admin-btn-sm">
+                                        Update
                                     </button>
                                 </Link>
                             </td>
                             {(Number.parseInt(user.role) === 1) && (
                                 <td>
-                                    <button onClick={() => remove(product._id)} className="btn btn-sm btn-danger">
-                                        Delete Product
+                                    <button onClick={() => remove(product._id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                                        Delete
                                     </button>
                                 </td>
                             )}
@@ -187,42 +176,10 @@ return (
                     ))}
                     </tbody>
                 </table>
-                <br/>
                 <Pagination itemsPerPage={itemsPerPage} totalItems={products.length} currentPage={currentPage} paginate={paginate}/>
-                {/*<ul className="list-group">*/}
-                {/*    {products.map((product, item) => (*/}
-                {/*        <li*/}
-                {/*            key={item}*/}
-                {/*            className="list-group-item d-flex justify-content-between align-items-center">*/}
-                {/*            <div className="container">*/}
-                {/*                <div className="row">*/}
-                {/*                    <div className="col-sm">*/}
-                {/*                        <strong>{product.name}</strong>*/}
-                {/*                    </div>*/}
-                {/*                    <div className="col-sm">*/}
-                {/*                        <Link to={`/admin/product/update/${product._id}`}>*/}
-                {/*                            <button className="badge badge-warning badge-pill "  >*/}
-                {/*                                Update Product*/}
-                {/*                            </button>*/}
-                {/*                        </Link>*/}
-                {/*                    </div>*/}
-                {/*                    <div className="col-sm">*/}
-                {/*                        <button onClick={() => remove(product._id)} className="badge badge-danger badge-pill">*/}
-                {/*                            Delete Product*/}
-                {/*                        </button>*/}
-                {/*                    </div>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-
-                {/*        </li>*/}
-
-                {/*    ))}*/}
-                {/*</ul>*/}
             </div>
         </div>
-    </Layout>
-    <Ftr/>
-    </div>
+    </AdminLayout>
 );
 };
 

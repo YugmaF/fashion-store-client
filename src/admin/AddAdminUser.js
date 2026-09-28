@@ -1,10 +1,7 @@
-import React, {Fragment, useEffect, useState} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
 import {addAdminUser} from "./ApiAdmin";
-import Ftr from "../core/Ftr";
-import {Link} from "react-router-dom";
-import {MDBBtn} from "mdbreact";
 
 const AddAdminUser = () => {
     const {user, token} = isAuthenticate();
@@ -27,15 +24,14 @@ const AddAdminUser = () => {
         name,
         email,
         password,
-        role,
         error,
-        createdUser,
         showSuccess,
         formData
     } = userDetails;
 
     useEffect(() => {
         setUserDetails({...userDetails, formData: new FormData()})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleOnChange = (name) => (event) => {
@@ -45,47 +41,15 @@ const AddAdminUser = () => {
     };
 
     const valueChangeHandler = (event) => {
-        console.log(event.target.value);
         formData.set("role", Number.parseInt(event.target.value));
         setUserDetails({...userDetails, "role": Number.parseInt(event.target.value)});
-    };
-
-    const showErrorMsg = () => {
-        if(error){
-            return(
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>{error}</strong>
-                </div>
-            );
-        }
-    };
-    const backButton = () => {
-        return (
-            <Fragment>
-                <Link to="/admin/dashboard">
-                    <MDBBtn color="mdb-color">
-                        Back to Dashboard
-                    </MDBBtn>
-                </Link>
-            </Fragment>
-        );
-    };
-
-    const showSuccessMsg = () => {
-        if(showSuccess){
-            return(
-                <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>New user is created successfully!</strong>
-                </div>
-            );
-        }
     };
 
     const onSubmit = (event) => {
         event.preventDefault();
         setLoader(true);
         setUserDetails({...userDetails});
-        addAdminUser(user._id, token,{name, email, password, role})
+        addAdminUser(user._id, token,{name, email, password, role: userDetails.role})
             .then(data => {
                 if (data.error) {
                     setUserDetails({...userDetails, error: data.error, showSuccess: false});
@@ -98,56 +62,42 @@ const AddAdminUser = () => {
             })
     };
 
-    const newUser = () => (
-        <div className="col-md-8 col-sm-8 col-lg-8 container-fluid">
-            {showErrorMsg()}
-            {showSuccessMsg()}
-            <form>
-                <div className="form-group">
-                    <label className="text-muted">Name</label>
-                    <input type="text" value={name} onChange={handleOnChange('name')} className="form-control" autoFocus required/>
-                </div>
-                <div className="form-group">
-                    <label className="text-muted">Email</label>
-                    <input type="email" value={email} onChange={handleOnChange('email')} className="form-control" autoFocus required/>
-                </div>
-                <div className="form-group">
-                    <label className="text-muted">Password</label>
-                    <input type="password" value={password} onChange={handleOnChange('password')} className="form-control" autoFocus
-                           required/>
-                </div>
-                <div className="form-group">
-                    <label className="text-muted">Role</label>
-                    <select onChange={(e) => valueChangeHandler(e)} className="form-control">
-                        {roles.map((role, index) => (
-                            <option value={role.roleId} key={index}>{role.roleName}</option>
-                        ))}
-                    </select>
-                </div>
-
-
-                <div className="form-group">
-                    {/*<button className="btn btn-primary" onClick={onSubmit}>Create User</button>*/}
-                    <button className="btn btn-primary" onClick={onSubmit}
-                            disabled={loader}>{loader ? 'Loading...' : 'Create User'}</button>
-                </div>
-            </form>
-        </div>
-    );
-
     return (
-     <div>
-        <Layout title="Add new user" description={`Welcome back ${user.name}, Add a new user now!`}
-                className="container-fluid">
-            {backButton()}
-            <hr/>
-            {newUser()}
-            <hr/>
+        <AdminLayout backTo="/admin/dashboard" backText="Back to dashboard" title="Add new user" description={`Welcome back ${user.name}, add a new user now!`}>
+            <div className="admin-card">
+                <div className="admin-card-body">
+                    {error && <div className="admin-alert admin-alert-danger"><strong>{error}</strong></div>}
+                    {showSuccess && <div className="admin-alert admin-alert-success"><strong>New user is created successfully!</strong></div>}
+                    <form className="admin-form">
+                        <div className="admin-form-group">
+                            <label className="admin-form-label">Name</label>
+                            <input type="text" value={name} onChange={handleOnChange('name')} className="form-control" autoFocus required/>
+                        </div>
+                        <div className="admin-form-group">
+                            <label className="admin-form-label">Email</label>
+                            <input type="email" value={email} onChange={handleOnChange('email')} className="form-control" required/>
+                        </div>
+                        <div className="admin-form-group">
+                            <label className="admin-form-label">Password</label>
+                            <input type="password" value={password} onChange={handleOnChange('password')} className="form-control"
+                                   required/>
+                        </div>
+                        <div className="admin-form-group">
+                            <label className="admin-form-label">Role</label>
+                            <select onChange={(e) => valueChangeHandler(e)} className="form-control">
+                                {roles.map((role, index) => (
+                                    <option value={role.roleId} key={index}>{role.roleName}</option>
+                                ))}
+                            </select>
+                        </div>
 
-
-        </Layout>
-         <Ftr/>
-     </div>
+                        <button className="admin-btn admin-btn-primary" onClick={onSubmit} disabled={loader}>
+                            {loader ? 'Loading...' : 'Create User'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </AdminLayout>
     );
 };
 
