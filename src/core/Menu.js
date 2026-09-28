@@ -34,7 +34,7 @@ const Menu = ({history}) => (
         <div className="collapse navbar-collapse" id="basicExampleNav">
 
             <ul className="navbar-nav mr-auto">
-                {isAuthenticate() && (parseInt(isAuthenticate().user.role) === 0 || parseInt(isAuthenticate().user.role) === 1 || parseInt(isAuthenticate().user.role) === 2) && (
+                {isAuthenticate() && (Number.parseInt(isAuthenticate().user.role) === 0 || Number.parseInt(isAuthenticate().user.role) === 1 || Number.parseInt(isAuthenticate().user.role) === 2) && (
                     <li className="nav-item">
                         <Link className="nav-link" style={isActive(history, '/user/dashboard')}
                               to="/user/dashboard">Dashboard</Link>
@@ -108,7 +108,7 @@ const Menu = ({history}) => (
                                 {' '} Hi! {isAuthenticate().user.name}
                             </a>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                {isAuthenticate() && (parseInt(isAuthenticate().user.role) === 1 || parseInt(isAuthenticate().user.role) === 2) && (
+                                {isAuthenticate() && (Number.parseInt(isAuthenticate().user.role) === 1 || Number.parseInt(isAuthenticate().user.role) === 2) && (
                                     <div>
                                         <span className="dropdown-item" style={{cursor: 'pointer', color: '#7a7a7a'}}>
                                             <Link className="nav-link" style={isActive(history, '/admin/dashboard')}

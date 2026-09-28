@@ -46,8 +46,8 @@ const AddAdminUser = () => {
 
     const valueChangeHandler = (event) => {
         console.log(event.target.value);
-        formData.set("role", parseInt(event.target.value));
-        setUserDetails({...userDetails, "role": parseInt(event.target.value)});
+        formData.set("role", Number.parseInt(event.target.value));
+        setUserDetails({...userDetails, "role": Number.parseInt(event.target.value)});
     };
 
     const showErrorMsg = () => {
