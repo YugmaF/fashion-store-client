@@ -14,7 +14,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  sonarqube:
+    name: SonarQube quality gate
+    uses: ./.github/workflows/sonarqube.yml
+    secrets: inherit
+
   deploy:
+    needs: sonarqube # deploy is skipped if the quality gate fails
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render deployment
