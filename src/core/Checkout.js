@@ -42,7 +42,7 @@ const Checkout = ({products}) => {
     const getTotal = () => {
         return products.reduce((currentValue, nextValue) => {
             //current value gets as 0 and add values to current value from next value by looping through array
-            return (nextValue.isChecked ? (Number.parseFloat(currentValue) + Number.parseFloat(nextValue.count) * Number.parseFloat(nextValue.price)).toFixed(2) : (Number.parseFloat(currentValue)).toFixed(2));
+            return (nextValue.isChecked ? (Number.parseFloat(currentValue) + Number.parseFloat(nextValue.price)).toFixed(2) : (Number.parseFloat(currentValue)).toFixed(2));
         }, 0);
     };
 
