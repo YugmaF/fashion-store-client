@@ -1,0 +1,235 @@
+.sf-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    color: #fff;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: sf-gradient 15s ease infinite;
+    margin-bottom: 1.5rem;
+}
+
+.sf-hero-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+    backdrop-filter: blur(4px);
+}
+
+.sf-hero-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.sf-hero-insight {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+@keyframes sf-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.sf-kpi-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sf-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    padding: 1.25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    opacity: 0;
+    animation: sf-fade-in 0.5s ease forwards;
+}
+
+.sf-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.sf-kpi-card {
+    flex: 1 1 220px;
+}
+
+.sf-kpi-row .sf-card:nth-child(1) { animation-delay: 0.05s; }
+.sf-kpi-row .sf-card:nth-child(2) { animation-delay: 0.15s; }
+.sf-kpi-row .sf-card:nth-child(3) { animation-delay: 0.25s; }
+.sf-kpi-row .sf-card:nth-child(4) { animation-delay: 0.35s; }
+
+@keyframes sf-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sf-kpi-label {
+    font-size: 0.85rem;
+    color: #6b6f76;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.sf-kpi-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #23213a;
+}
+
+.sf-kpi-sparkline {
+    height: 32px;
+    margin-top: 0.5rem;
+}
+
+.sf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+}
+
+.sf-chip-up {
+    background: rgba(35, 213, 171, 0.15);
+    color: #128a6b;
+}
+
+.sf-chip-down {
+    background: rgba(231, 76, 60, 0.12);
+    color: #c0392b;
+}
+
+.sf-charts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sf-chart-card {
+    flex: 1 1 480px;
+    min-width: 0;
+}
+
+.sf-chart-card canvas {
+    max-width: 100%;
+}
+
+.sf-doughnut-wrap {
+    position: relative;
+}
+
+.sf-doughnut-total {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.sf-doughnut-total-number {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #23213a;
+}
+
+.sf-doughnut-total-label {
+    font-size: 0.75rem;
+    color: #6b6f76;
+    text-transform: uppercase;
+}
+
+.sf-whatif {
+    margin-bottom: 1.5rem;
+}
+
+.sf-whatif-value {
+    font-weight: 700;
+    color: #e73c7e;
+}
+
+.sf-whatif input[type="range"] {
+    width: 100%;
+}
+
+.sf-products-table {
+    width: 100%;
+}
+
+.sf-products-table th {
+    color: #6b6f76;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.sf-medal {
+    font-size: 1.2rem;
+    margin-right: 0.35rem;
+}
+
+.sf-share-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-top: 0.35rem;
+}
+
+.sf-share-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ee7752, #e73c7e);
+    transition: width 0.4s ease;
+}
+
+@media (max-width: 576px) {
+    .sf-kpi-card {
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    .sf-chart-card {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .sf-hero {
+        padding: 1.5rem 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sf-hero,
+    .sf-card,
+    .sf-share-bar-fill {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .sf-card {
+        opacity: 1;
+    }
+}
