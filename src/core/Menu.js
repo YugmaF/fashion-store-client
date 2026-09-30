@@ -46,7 +46,7 @@ const Menu = ({history}) => (
                 </li>
 
                 <li className="nav-item">
-                    <Link className="nav-link" style={isActive(history, '/shop')} to="/shop">Store</Link>
+                    <Link className="nav-link" style={isActive(history, '/shop')} to="/shop">Collection</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" style={isActive(history, '/offers')} to="/offers">Offers</Link>
