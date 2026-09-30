@@ -62,9 +62,10 @@ const Ftr = () => {
                             {/*<li className="mb-2"><a className="text-light" href="#">Vulgasset ut solent</a></li>*/}
                             {/*<li className="mb-2"><a className="text-light" href="#">Sensim fame petivere</a></li>*/}
                             {/*<li className="mb-2"><a className="text-light" href="#">Minimumque</a></li>*/}
-                            <p className="mb-2" className="text-light"> Here at Quarantine Fashion Store We provide you with the best of the best.
-                                Make your dream wardrobe a reality by shopping with us.</p>
-                            <p className="mb-2" className="text-light"> With everything at the tip of your fingers, shopping has never been easier.</p>
+                            <p className="mb-2 text-light">FashionStore brings together clothing, shoes, and accessories
+                                for the whole family at fair, accessible prices.</p>
+                            <p className="mb-2 text-light">Shop online or visit our Colombo flagship store for friendly,
+                                personal service.</p>
                         </ul>
                     </div>
                     <div className="col-sm-12 col-md-4 text-center text-md-center pb-4">
@@ -81,9 +82,9 @@ const Ftr = () => {
                     <div className="col-sm-12 col-md-4 text-center text-md-right pb-4">
                         <h3 className="text-info pb-2 border-bottom border-info">Contact Us</h3>
                         <ul className="list-unstyled d-inline-block d-sm-block">
-                            <p className="mb-1"><i className="fa fa-phone fa-fw"></i>&nbsp;+94 75 5172 666</p>
+                            <p className="mb-1"><i className="fa fa-phone fa-fw"></i>&nbsp;+94 11 234 5678</p>
                             <p className="mb-1"><i className="fa fa-envelope fa-fw"></i>&nbsp;<a className="text-light"
-                                                                                                 href="mailto:contact@company.com">quarantinefashionstore@google.com</a>
+                                                                                                 href="mailto:hello@fashionstore.lk">hello@fashionstore.lk</a>
                             </p>
                             <br></br>
                             <div><a className="text-light " href="#"><i
@@ -116,12 +117,12 @@ const Ftr = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6 col-lg-4 text-center text-md-left pb-4">
-                            <h2 className="mb-3 "><img src={FooterLogo}/></h2>
-                            <p className="mb-1"><i className="fa fa-map-marker fa-fw"></i>&nbsp;Royal Road - Tamarin -
-                                Mauritius</p>
-                            <p className="mb-1"><i className="fa fa-phone fa-fw"></i>&nbsp;+94 75 5172 666</p>
+                            <h2 className="mb-3 "><img src={FooterLogo} alt="FashionStore"/></h2>
+                            <p className="mb-1"><i className="fa fa-map-marker fa-fw"></i>&nbsp;42 Galle Road, Colombo 03,
+                                Sri Lanka</p>
+                            <p className="mb-1"><i className="fa fa-phone fa-fw"></i>&nbsp;+94 11 234 5678</p>
                             <p className="mb-1"><i className="fa fa-envelope fa-fw"></i>&nbsp;<a className="text-dark"
-                                                                                                 href="mailto:contact@company.com">quarantinefashionstore@google.com</a>
+                                                                                                 href="mailto:hello@fashionstore.lk">hello@fashionstore.lk</a>
                             </p>
                         </div>
                         <div className="col-md-6 col-lg-4 text-center text-md-center pb-4">
@@ -161,7 +162,7 @@ const Ftr = () => {
             </div>
             <div className="text-center text-lg-left py-2 small bg-dark text-info font-italic">
                 <div className="container">
-                    <p className="m-0">© 2020 Quarantine Fashion Store ~ All rights reserved</p>
+                    <p className="m-0">© 2026 FashionStore ~ All rights reserved</p>
                 </div>
             </div>
         </footer>
