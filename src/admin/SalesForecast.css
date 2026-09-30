@@ -1,0 +1,321 @@
+/* ─── Sales Forecast page ────────────────────────────────────────────────────
+   All classes carry the `sf-` prefix to prevent collisions.
+   Brand gradient from StyleMain.css: #ee7752 · #e73c7e · #23a6d5 · #23d5ab
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.sf-hero {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: sf-gradient 12s ease infinite;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes sf-gradient {
+    0%   { background-position: 0%   50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+}
+
+.sf-hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50px;
+    padding: 0.15rem 0.8rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+}
+
+.sf-hero-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+    line-height: 1.15;
+}
+
+.sf-hero-insight {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ── KPI grid ────────────────────────────────────────────────────────────── */
+.sf-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sf-kpi-card {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 1.25rem 1.1rem 1rem;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    animation: sf-fade-in 0.45s ease both;
+}
+
+.sf-kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.11);
+}
+
+/* Staggered entrance */
+.sf-kpi-card:nth-child(1) { animation-delay: 0.00s; }
+.sf-kpi-card:nth-child(2) { animation-delay: 0.09s; }
+.sf-kpi-card:nth-child(3) { animation-delay: 0.18s; }
+.sf-kpi-card:nth-child(4) { animation-delay: 0.27s; }
+
+@keyframes sf-fade-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+.sf-kpi-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.35rem;
+}
+
+.sf-kpi-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #222;
+    line-height: 1.1;
+    margin-bottom: 0.1rem;
+}
+
+/* ── Sparkline ───────────────────────────────────────────────────────────── */
+.sf-sparkline {
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin-top: 0.55rem;
+    overflow: visible;
+}
+
+/* ── Growth chip ─────────────────────────────────────────────────────────── */
+.sf-growth-chip {
+    display: inline-block;
+    padding: 0.18rem 0.55rem;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.sf-growth-up {
+    background: rgba(35, 213, 171, 0.15);
+    color: #0b7a5c;
+}
+
+.sf-growth-down {
+    background: rgba(231, 60, 126, 0.12);
+    color: #a0104e;
+}
+
+/* ── Chart cards ─────────────────────────────────────────────────────────── */
+.sf-chart-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 1.5rem 1.5rem 1.25rem;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+    margin-bottom: 1.5rem;
+}
+
+.sf-chart-card h5 {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+}
+
+/* ── Doughnut overlay ────────────────────────────────────────────────────── */
+.sf-doughnut-wrapper {
+    position: relative;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.sf-doughnut-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    line-height: 1.2;
+}
+
+.sf-doughnut-total {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #222;
+    display: block;
+}
+
+.sf-doughnut-label {
+    font-size: 0.65rem;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+}
+
+/* ── What-if slider ──────────────────────────────────────────────────────── */
+.sf-slider-section {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+.sf-slider-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #444;
+    margin-bottom: 0.6rem;
+}
+
+.sf-slider-section input[type='range'] {
+    width: 100%;
+    accent-color: #e73c7e;
+    cursor: pointer;
+}
+
+.sf-slider-hint {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.3rem;
+}
+
+/* ── Top-products table ──────────────────────────────────────────────────── */
+.sf-table-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.sf-table-card h5 {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+    padding: 1.1rem 1.5rem 0.9rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.sf-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sf-table th {
+    background: rgba(35, 166, 213, 0.08);
+    color: #555;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.sf-product-row td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.88rem;
+    color: #333;
+    vertical-align: middle;
+}
+
+.sf-product-row:last-child td {
+    border-bottom: none;
+}
+
+/* Revenue-share progress bar */
+.sf-progress-bar-wrap {
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    height: 8px;
+    width: 100px;
+    overflow: hidden;
+}
+
+.sf-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #e73c7e, #ee7752);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    min-width: 2px;
+}
+
+/* ── Responsive: mobile ≤ 576 px ─────────────────────────────────────────── */
+@media (max-width: 576px) {
+    .sf-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sf-chart-card {
+        padding: 1rem;
+    }
+
+    .sf-table th,
+    .sf-product-row td {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.75rem;
+    }
+
+    .sf-progress-bar-wrap {
+        width: 55px;
+    }
+
+    .sf-doughnut-wrapper {
+        max-width: 220px;
+    }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .sf-hero {
+        animation: none !important;
+    }
+
+    .sf-kpi-card {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .sf-progress-bar,
+    .sf-kpi-card:hover {
+        transition: none !important;
+    }
+}
