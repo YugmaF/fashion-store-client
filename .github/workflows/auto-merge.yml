@@ -22,11 +22,31 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REPO: ${{ github.repository }}
       PR: ${{ github.event.pull_request.number }}
+      REVIEWER: ${{ github.event.review.user.login }}
+      # Review bots allowed to trigger a merge in addition to users with write access
+      TRUSTED_BOTS: viper-review[bot]
     steps:
+      # Anyone with triage access can approve, so only merge when the
+      # reviewer could have merged the PR themselves.
+      - name: Check reviewer permission
+        id: reviewer
+        run: |
+          if printf '%s\n' $TRUSTED_BOTS | grep -Fxq "$REVIEWER"; then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          PERMISSION=$(gh api "repos/$REPO/collaborators/$REVIEWER/permission" --jq .permission || echo none)
+          case "$PERMISSION" in
+            admin|write) echo "allowed=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::notice::Not merging: $REVIEWER has '$PERMISSION' permission" ;;
+          esac
+
       - name: Merge pull request
+        if: steps.reviewer.outputs.allowed == 'true'
         run: gh pr merge "$PR" --merge --repo "$REPO"
 
       # A merge made with GITHUB_TOKEN does not fire the push event,
       # so start the SonarQube gate + Render deploy explicitly.
       - name: Start SonarQube gate and deploy
+        if: steps.reviewer.outputs.allowed == 'true'
         run: gh workflow run deploy-render.yml --ref master --repo "$REPO"
