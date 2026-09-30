@@ -1,0 +1,32 @@
+name: Auto-merge on approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  merge:
+    name: Merge approved PR
+    if: >-
+      github.event.review.state == 'approved' &&
+      github.event.pull_request.base.ref == 'master' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Merge pull request
+        run: gh pr merge "$PR" --merge --repo "$REPO"
+
+      # A merge made with GITHUB_TOKEN does not fire the push event,
+      # so start the SonarQube gate + Render deploy explicitly.
+      - name: Start SonarQube gate and deploy
+        run: gh workflow run deploy-render.yml --ref master --repo "$REPO"
