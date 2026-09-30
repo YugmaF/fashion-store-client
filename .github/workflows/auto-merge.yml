@@ -31,7 +31,7 @@ jobs:
       - name: Check reviewer permission
         id: reviewer
         run: |
-          if printf '%s\n' $TRUSTED_BOTS | grep -Fxq "$REVIEWER"; then
+          if tr ' ' '\n' <<< "$TRUSTED_BOTS" | grep -Fxq "$REVIEWER"; then
             echo "allowed=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
