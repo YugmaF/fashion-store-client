@@ -1,0 +1,133 @@
+.sf-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 32px 24px;
+    margin-bottom: 24px;
+    border-radius: 16px;
+    color: #fff;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: sf-gradient 15s ease infinite;
+}
+
+.sf-hero-title {
+    margin: 0;
+    font-weight: 700;
+}
+
+.sf-badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.sf-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.sf-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sf-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.sf-card-label {
+    color: #888;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+}
+
+.sf-card-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.sf-growth-up {
+    color: #2ecc71;
+}
+
+.sf-growth-down {
+    color: #e74c3c;
+}
+
+.sf-charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.sf-chart-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sf-chart-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.sf-chart-title {
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+@keyframes sf-gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sf-hero {
+        animation: none;
+    }
+
+    .sf-card,
+    .sf-chart-card {
+        transition: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .sf-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .sf-charts {
+        grid-template-columns: 1fr;
+    }
+
+    .sf-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
