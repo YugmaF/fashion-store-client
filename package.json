@@ -14,6 +14,8 @@
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.4.1",
+    "chart.js": "2.9.3",
+    "react-chartjs-2": "2.9.0",
     "braintree-web": "^3.60.0",
     "braintree-web-drop-in-react": "^1.1.1",
     "cors": "^2.8.5",
