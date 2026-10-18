@@ -1,0 +1,300 @@
+/* ─── Hero ──────────────────────────────────────────────────────────── */
+.sd-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    border-radius: 16px;
+    color: #fff;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #533483 100%);
+    box-shadow: 0 8px 32px rgba(26, 26, 46, 0.35);
+}
+
+.sd-hero-left h1 {
+    margin: 0 0 4px;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.sd-hero-left p {
+    margin: 0;
+    opacity: 0.75;
+    font-size: 0.9rem;
+}
+
+.sd-hero-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sd-badge {
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(231, 60, 126, 0.85);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.sd-date-badge {
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.15);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+}
+
+/* ─── Section title ─────────────────────────────────────────────────── */
+.sd-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 14px;
+    padding-left: 10px;
+    border-left: 4px solid #e73c7e;
+}
+
+/* ─── KPI grid ──────────────────────────────────────────────────────── */
+.sd-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.sd-kpi-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 0 22px 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.sd-kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13);
+}
+
+.sd-kpi-bar {
+    height: 4px;
+    margin: 0 -22px 18px;
+    border-radius: 0;
+}
+
+.sd-kpi-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+}
+
+.sd-kpi-label {
+    color: #8a8a9a;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 5px;
+}
+
+.sd-kpi-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 6px;
+    line-height: 1;
+}
+
+.sd-kpi-growth {
+    font-size: 0.78rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+.sd-kpi-share {
+    font-size: 0.78rem;
+    color: #8a8a9a;
+    margin: 0;
+}
+
+/* ─── Growth colours ────────────────────────────────────────────────── */
+.sd-up   { color: #2ecc71; }
+.sd-down { color: #e74c3c; }
+
+/* ─── Chart cards ───────────────────────────────────────────────────── */
+.sd-charts-row {
+    display: grid;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.sd-charts-row-main {
+    grid-template-columns: 2fr 1fr;
+}
+
+.sd-charts-row-sub {
+    grid-template-columns: 1fr 1fr;
+}
+
+.sd-chart-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 24px 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sd-chart-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.11);
+}
+
+.sd-chart-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sd-chart-body-doughnut {
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+/* ─── Tables ────────────────────────────────────────────────────────── */
+.sd-tables-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.sd-table-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 24px 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+
+.sd-table-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0 0 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+}
+
+.sd-table thead th {
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8a8a9a;
+    border-bottom: 2px solid #f0f0f0;
+    white-space: nowrap;
+}
+
+.sd-table tbody td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #f8f8f8;
+    vertical-align: middle;
+}
+
+.sd-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.sd-table tbody tr:hover td {
+    background: #fafafa;
+}
+
+/* Rank bubble */
+.sd-rank {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e73c7e, #23a6d5);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Category pill */
+.sd-cat-pill {
+    font-size: 0.68rem;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #f0f0f5;
+    color: #555;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Order status badges */
+.sd-status {
+    font-size: 0.68rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sd-status-delivered  { background: #d4edda; color: #155724; }
+.sd-status-processing { background: #fff3cd; color: #856404; }
+.sd-status-shipped    { background: #e3d0f5; color: #5b21b6; }
+.sd-status-received   { background: #cce5ff; color: #004085; }
+.sd-status-cancelled  { background: #f8d7da; color: #721c24; }
+
+/* ─── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 992px) {
+    .sd-charts-row-main { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .sd-kpi-grid          { grid-template-columns: 1fr 1fr; }
+    .sd-charts-row-sub    { grid-template-columns: 1fr; }
+    .sd-tables-row        { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+    .sd-kpi-grid { grid-template-columns: 1fr; }
+
+    .sd-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sd-kpi-card,
+    .sd-chart-card {
+        transition: none;
+    }
+}
