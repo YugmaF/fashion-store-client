@@ -28,6 +28,7 @@ import ManageCategories from "./admin/ManageCategories";
 import UpdateCategory from "./admin/UpdateCategory";
 import Orders from "./admin/Orders";
 import SalesForecast from "./admin/SalesForecast";
+import SalesDashboard from "./admin/SalesDashboard";
 import ManageAdminUser from "./admin/ManageAdminUser";
 import ProductByCategory from "./core/ProductByCategory";
 import ProductBySearch from "./core/ProductBySearch";
@@ -72,6 +73,8 @@ const Routes = () => {
                     path="/admin/orders" exact component={Orders} />
                 <AdminRoute
                     path="/admin/sales-forecast" exact component={SalesForecast} />
+                <AdminRoute
+                    path="/admin/sales-dashboard" exact component={SalesDashboard} />
                 <StoreManagerRote
                     path="/admin/category/update/:categoryId" exact component={UpdateCategory} />
                 <AdminRoute
