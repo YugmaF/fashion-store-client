@@ -1,37 +1,61 @@
-.AutoComplete{
+.AutoComplete {
     width: 100%;
-    border: 1px solid grey;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 4px 1px rgba(0,0,0,.18);
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid #ebecf5;
+    background: #f4f5fb;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
-.AutoComplete input{
+.AutoComplete:focus-within {
+    border-color: #e73c7e;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(231, 60, 126, 0.12);
+}
+
+.AutoComplete input {
     width: 100%;
     border: none;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.73);
-    padding: 10px 5px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.87rem;
+    color: #1a1a2e;
+    padding: 10px 14px;
     box-sizing: border-box;
     outline: none;
 }
 
-.AutoComplete ul::before{
+.AutoComplete ul::before {
     content: "";
 }
 
-.AutoComplete ul{
+.AutoComplete ul {
     list-style-type: none;
     text-align: left;
     margin: 0;
-    padding: 0;
-    border-top: 1px solid grey;
+    padding: 4px;
+    border-top: 1px solid #ebecf5;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 24px rgba(17, 17, 38, 0.12);
+    z-index: 20;
+    max-height: 220px;
+    overflow-y: auto;
 }
 
-.AutoComplete li{
-    padding: 10px 5px;
+.AutoComplete li {
+    padding: 9px 12px;
     cursor: pointer;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    color: #1a1a2e;
 }
 
-.AutoComplete li:hover{
-    background-color: rgba(128, 128, 128, 0.20);
+.AutoComplete li:hover {
+    background-color: #fdecea;
+    color: #e73c7e;
 }

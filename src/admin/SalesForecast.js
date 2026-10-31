@@ -1,7 +1,6 @@
 import React, {useMemo} from "react";
 import {Line, Doughnut} from "react-chartjs-2";
-import Layout from "../core/Layout";
-import Ftr from "../core/Ftr";
+import AdminLayout from "./AdminLayout";
 import {
     generateDummyOrders,
     groupRevenueByMonth,
@@ -84,14 +83,14 @@ const SalesForecast = () => {
     const growthClass = growthKnown ? (growthIsUp ? 'sf-growth-up' : 'sf-growth-down') : '';
 
     return (
-        <div>
-            <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Sales Forecast"
-                    className="container-fluid">
-                <div className="sf-hero">
-                    <h1 className="sf-hero-title">Sales Forecast</h1>
-                    <span className="sf-badge">Sample data</span>
-                </div>
-
+        <AdminLayout
+            back
+            backText="Back to dashboard"
+            to="/admin/dashboard"
+            title="Sales Forecast"
+            description="Projected revenue based on recent trends"
+            actions={<span className="ad-pill ad-pill-neutral">Sample data</span>}
+        >
                 <div className="sf-cards">
                     <div className="sf-card">
                         <h6 className="sf-card-label">Revenue this month</h6>
@@ -117,9 +116,7 @@ const SalesForecast = () => {
                         <Doughnut data={doughnutData}/>
                     </div>
                 </div>
-            </Layout>
-            <Ftr/>
-        </div>
+        </AdminLayout>
     );
 };
 

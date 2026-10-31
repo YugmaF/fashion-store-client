@@ -1,41 +1,29 @@
-import React, {useEffect, useState, Fragment} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
-import {Link} from "react-router-dom";
-import "mdbreact/dist/css/mdb.css";
-import {createCategory} from "./ApiAdmin";
-import {MDBContainer, MDBAlert} from 'mdbreact';
-import {MDBDataTable} from 'mdbreact';
-import {getAllCategories} from "../core/apiCore";
-import {MDBBtn} from "mdbreact";
 import {getSingleCategory, updateSingleCategory} from "./ApiAdmin";
-import Ftr from "../core/Ftr";
+import {getAllCategories} from "../core/apiCore";
 import {confirmAlert} from "react-confirm-alert";
+import moment from "moment";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faLayerGroup} from "@fortawesome/free-solid-svg-icons";
 
 const UpdateCategory = ({match}) => {
     const [name, setName] = useState('');
-    const [error, setError] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [loader, setLoader] = useState(false);
     const [categories, setCategories] = useState([]);
-    const [errorCat, setErrorCat] = useState(false);
 
     const init = (categoryId) => {
         getSingleCategory(categoryId).then(data => {
-            if(data.error){
-                setErrorCat(data.error);
-                console.error(errorCat);
-            } else {
+            if (!data.error) {
                 setName(data.name);
             }
         })
     };
+
     const loadCategories = () => {
         getAllCategories().then(data => {
-            if (data.error) {
-                setErrorCat(data.error);
-                console.error(errorCat);
-            } else {
+            if (!data.error) {
                 setCategories(data);
             }
         })
@@ -44,153 +32,113 @@ const UpdateCategory = ({match}) => {
     useEffect(() => {
         loadCategories();
         init(match.params.categoryId);
-        console.log(match.params.categoryId)
     }, []);
 
-    //get user and info from local storage
     const {user, token} = isAuthenticate();
 
     const handleChange = (event) => {
-        let value = event.target.value;
-        setError(false);
-        setName(value);
+        setName(event.target.value);
     };
 
     const submit = (event) => {
         event.preventDefault();
         setLoader(true);
-        setError(false);
-        setSuccess(false);
-        //create category
-        //use api request
         updateSingleCategory(match.params.categoryId, user._id, token, {name})
             .then(data => {
                 setLoader(false);
-                setName('');
                 if (data.error) {
-                    setError(true);
-                    setSuccess(false);
                     confirmAlert({
                         title: 'Name should be unique',
-                        buttons: [
-                            {
-                                label: 'OK',
-                            }
-                        ]
+                        buttons: [{label: 'OK'}]
                     });
                 } else {
-                    setError(false);
-                    setSuccess(true);
                     loadCategories();
                     confirmAlert({
                         title: 'Category updated successfully!',
-                        buttons: [
-                            {
-                                label: 'OK',
-                            }
-                        ]
+                        buttons: [{label: 'OK'}]
                     });
                 }
             })
-
     };
-
-    const showSuccessMsg = () => {
-        if (success) {
-            return (
-                <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>category is Updated successfully!</strong>
-                </div>
-            );
-        }
-    };
-
-    const categoryTable = () => {
-        if (categories.length > 0) {
-            const data = {
-                columns: [
-                    {
-                        label: 'ID',
-                        field: '_id',
-                        sort: 'asc',
-                        width: 200
-                    },
-                    {
-                        label: 'Name',
-                        field: 'name',
-                        sort: 'asc',
-                        width: 270
-                    },
-                    {
-                        label: 'Created At',
-                        field: 'createdAt',
-                        sort: 'asc',
-                        width: 200
-                    },
-                    {
-                        label: 'Updated At',
-                        field: 'updatedAt',
-                        sort: 'asc',
-                        width: 100
-                    }
-                ], rows: categories
-            };
-
-            return (
-                <div className="container-fluid col-md-12 col-lg-12 col-sm-12">
-                    <MDBDataTable
-                        striped
-                        bordered
-                        hover
-                        responsive
-                        data={data}
-                    />
-                </div>
-            );
-
-        } else {
-            return null;
-        }
-    };
-
-    const showErrorMsg = () => {
-        if (error) {
-            return (
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Name</strong> should be unique!
-                </div>
-            );
-        }
-    };
-
-    const updateCategoryForm = () => (
-        <div className="col-md-8 col-sm-8 col-lg-8 container-fluid">
-            <form onSubmit={submit}>
-                <div className="form-group">
-                    <label className="text-muted">Category Name</label>
-                    <input type="text" className="form-control" onChange={handleChange} value={name} autoFocus
-                           required/>
-                </div>
-                <div className="form-group">
-                    <button className="btn btn-primary"
-                            disabled={loader}>{loader ? 'Loading...' : 'Update Category'}</button>
-                </div>
-            </form>
-        </div>
-    );
 
     return (
-        <div>
-        <Layout back={true} backText="Back to Manage Category" to="/admin/categories" title="Update category" description={`Welcome back ${user.name}, Update Category now`}
-                className="container-fluid">
-            {showSuccessMsg()}
-            {showErrorMsg()}
-            {updateCategoryForm()}
-            <hr/>
-            {categoryTable()}
-        </Layout>
-        <Ftr/>
-        </div>
+        <AdminLayout
+            back
+            backText="Back to Manage Categories"
+            to="/admin/categories"
+            title="Update Category"
+            description={`Welcome back ${user.name}, update this category now`}
+        >
+            <div className="ad-card" style={{marginBottom: 24}}>
+                <div className="ad-card-header">
+                    <div>
+                        <h2>Category details</h2>
+                        <p>Rename this category across the catalog</p>
+                    </div>
+                </div>
+                <div className="ad-card-body">
+                    <form onSubmit={submit}>
+                        <div className="ad-form-grid">
+                            <div className="ad-field ad-field-full">
+                                <label>Category name</label>
+                                <input
+                                    type="text"
+                                    className="ad-input"
+                                    onChange={handleChange}
+                                    value={name}
+                                    autoFocus
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="ad-form-actions">
+                            <button className="ad-btn ad-btn-primary" disabled={loader}>
+                                {loader ? 'Updating…' : 'Update category'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div className="ad-card">
+                <div className="ad-card-header">
+                    <div>
+                        <h2>All categories</h2>
+                        <p>{categories.length} categor{categories.length === 1 ? 'y' : 'ies'} in your catalog</p>
+                    </div>
+                </div>
+                {categories.length > 0 ? (
+                    <div className="ad-table-wrap">
+                        <table className="ad-table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Created</th>
+                                <th>Last Updated</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {categories.map(category => (
+                                <tr key={category._id}>
+                                    <td>
+                                        <strong>{category.name}</strong>
+                                        <div className="ad-row-id">{category._id}</div>
+                                    </td>
+                                    <td>{moment(category.createdAt).format('MMM D, YYYY')}</td>
+                                    <td>{moment(category.updatedAt).format('MMM D, YYYY')}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className="ad-empty">
+                        <div className="ad-empty-icon"><FontAwesomeIcon icon={faLayerGroup}/></div>
+                        <h3>No categories yet</h3>
+                    </div>
+                )}
+            </div>
+        </AdminLayout>
     );
 };
 
