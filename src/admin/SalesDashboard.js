@@ -6,8 +6,7 @@ import {
     faTrophy, faUsers, faChartLine,
     faArrowUp, faArrowDown
 } from '@fortawesome/free-solid-svg-icons';
-import Layout from '../core/Layout';
-import Ftr from '../core/Ftr';
+import AdminLayout from './AdminLayout';
 import {
     MONTHLY_LABELS, MONTHLY_REVENUE, MONTHLY_ORDERS,
     CATEGORY_LABELS, CATEGORY_REVENUE, CATEGORY_COLORS,
@@ -275,26 +274,14 @@ const RecentOrdersTable = () => (
 /* ─── Main component ────────────────────────────────────────────────── */
 
 const SalesDashboard = () => (
-    <div>
-        <Layout
-            back={true}
-            backText="Back to dashboard"
-            to="/admin/dashboard"
-            title="Sales Dashboard"
-            className="container-fluid"
-        >
-            {/* Hero */}
-            <div className="sd-hero">
-                <div className="sd-hero-left">
-                    <h1>📊 Sales Statistics</h1>
-                    <p>Fashion Store · Year-to-date overview · October 2026</p>
-                </div>
-                <div className="sd-hero-right">
-                    <span className="sd-badge">Mock Data</span>
-                    <span className="sd-date-badge">Oct 2026</span>
-                </div>
-            </div>
-
+    <AdminLayout
+        back
+        backText="Back to dashboard"
+        to="/admin/dashboard"
+        title="Sales Dashboard"
+        description="Fashion Store · Year-to-date overview"
+        actions={<span className="ad-pill ad-pill-neutral">Mock data · Oct 2026</span>}
+    >
             {/* KPI cards */}
             <p className="sd-section-title">Key Performance Indicators</p>
             <div className="sd-kpi-grid">
@@ -348,9 +335,7 @@ const SalesDashboard = () => (
                 <TopProductsTable />
                 <RecentOrdersTable />
             </div>
-        </Layout>
-        <Ftr />
-    </div>
+    </AdminLayout>
 );
 
 export default SalesDashboard;

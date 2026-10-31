@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Switch, Route, useLocation} from 'react-router-dom';
 import ResetPasswordPage from "./core/ResetPasswordPage";
 import Layout from './core/Layout';
 import Home from './core/Home';
@@ -34,10 +34,24 @@ import ProductByCategory from "./core/ProductByCategory";
 import ProductBySearch from "./core/ProductBySearch";
 import Offers from "./core/Offers";
 
+const ADMIN_AREA_PREFIXES = [
+    '/admin',
+    '/create/category',
+    '/create/product',
+    '/create/user',
+    '/manage/user'
+];
+
+const SiteChrome = () => {
+    const location = useLocation();
+    const isAdminArea = ADMIN_AREA_PREFIXES.some(prefix => location.pathname.startsWith(prefix));
+    return isAdminArea ? null : <Menu/>;
+};
+
 const Routes = () => {
     return (
         <BrowserRouter>
-            <Menu/>
+            <SiteChrome/>
             <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/shop" exact component={ShopPage} />

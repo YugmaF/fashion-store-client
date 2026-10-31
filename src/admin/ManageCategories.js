@@ -1,37 +1,46 @@
-import React, {useEffect, useState, Fragment} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState, useMemo} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
 import {Link} from "react-router-dom";
-import "mdbreact/dist/css/mdb.css";
-import { confirmAlert } from 'react-confirm-alert';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {confirmAlert} from 'react-confirm-alert';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faTrash, faSearch, faLayerGroup, faPlus} from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
 import {getAllCategories, deleteSingleCategory} from "./ApiAdmin";
-import Ftr from "../core/Ftr";
 import Pagination from "./Pagination";
 
 const ManageCategories = () => {
-
     const [categories, setAllCategories] = useState([]);
+    const [query, setQuery] = useState('');
     const {user, token} = isAuthenticate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    //get Current item
-    const indexOfLast = currentPage * itemsPerPage;
-    const indexOfFirst = indexOfLast - itemsPerPage;
-    const getCurrentItem = categories.slice(indexOfFirst, indexOfLast);
+    const [itemsPerPage] = useState(10);
 
-    const  fetchCategories = () => {
-        getAllCategories().then (data => {
-            if(data.error){
+    const fetchCategories = () => {
+        getAllCategories().then(data => {
+            if (data.error) {
                 console.log(data.error)
-            }
-            else
+            } else {
                 setAllCategories(data)
+            }
         })
     };
 
-    const remove = categoryId =>
-    {
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const filteredCategories = useMemo(() => {
+        if (!query.trim()) return categories;
+        const term = query.trim().toLowerCase();
+        return categories.filter(category => category.name.toLowerCase().includes(term));
+    }, [categories, query]);
+
+    const indexOfLast = currentPage * itemsPerPage;
+    const indexOfFirst = indexOfLast - itemsPerPage;
+    const getCurrentItem = filteredCategories.slice(indexOfFirst, indexOfLast);
+
+    const remove = categoryId => {
         confirmAlert({
             title: 'Confirm Delete',
             message: 'Are you sure you want to delete this Category?',
@@ -39,126 +48,107 @@ const ManageCategories = () => {
                 {
                     label: 'Yes',
                     onClick: () => {
-                        deleteSingleCategory(categoryId, user._id, token). then(data => {
-                            if(data.error){
+                        deleteSingleCategory(categoryId, user._id, token).then(data => {
+                            if (data.error) {
                                 console.log(data.error)
                             } else {
                                 fetchCategories();
                                 confirmAlert({
                                     title: 'Category deleted successfully!',
-                                    buttons: [
-                                        {
-                                            label: 'OK',
-                                        }
-                                    ]
+                                    buttons: [{label: 'OK'}]
                                 });
                             }
                         })
                     }
                 },
-                {
-                    label: 'No',
-                    onClick: () => {}
-                }
+                {label: 'No', onClick: () => {}}
             ]
         });
     };
-    useEffect(() => {
-        fetchCategories();
-    }, []);
 
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    }
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <div>
-        <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Manage Categories" description="Update and delete Categories">
-            <div className="row ml-4 mr-4 mb-5">
-                <div className="col-12 table-responsive">
-                    <h2 className="text-center"> Total of {categories.length} Categories </h2>
-                    <hr/>
-                    <table id="categoryTable" className="table table-hover text-center" >
-                        <thead className="thead-dark">
-                        <tr>
-                            <th scope="col">Category Id</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Date Created</th>
-                            <th scope="col">Date Last Updated</th>
-                            <th scope="col">Update</th>
-                            <th scope="col">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {getCurrentItem.map((category, item) => (
-                            <tr key={category._id}>
-                                <th scope="row">{category._id}</th>
-                                <td><strong>{category.name}</strong></td>
-                                <td><strong>{category.createdAt}</strong></td>
-                                <td><strong>{category.updatedAt}</strong></td>
-                                <td>
-                                    <Link to={`/admin/category/update/${category._id}`}>
-                                        <button className="btn btn-sm btn-warning"  >
-                                            Update Category
-                                        </button>
-                                    </Link>
-                                </td>
-                                <td>
-                                    <button onClick={() => remove(category._id)} className="btn btn-sm btn-danger">
-                                        Delete Category
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    <br/>
-                    <Pagination itemsPerPage={itemsPerPage} totalItems={categories.length} currentPage={currentPage} paginate={paginate}/>
+        <AdminLayout
+            back
+            backText="Back to dashboard"
+            to="/admin/dashboard"
+            title="Manage Categories"
+            description="Organize your catalog into categories"
+            actions={(
+                <Link to="/create/category" className="ad-btn ad-btn-primary">
+                    <FontAwesomeIcon icon={faPlus}/> Add category
+                </Link>
+            )}
+        >
+            <div className="ad-card">
+                <div className="ad-toolbar">
+                    <div className="ad-search">
+                        <FontAwesomeIcon icon={faSearch}/>
+                        <input
+                            type="text"
+                            placeholder="Search categories…"
+                            value={query}
+                            onChange={e => {
+                                setQuery(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                        />
+                    </div>
+                    <div className="ad-toolbar-meta">
+                        <strong>{filteredCategories.length}</strong> of {categories.length} categories
+                    </div>
                 </div>
+
+                {getCurrentItem.length > 0 ? (
+                    <div className="ad-table-wrap">
+                        <table className="ad-table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Created</th>
+                                <th>Last Updated</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {getCurrentItem.map(category => (
+                                <tr key={category._id}>
+                                    <td>
+                                        <strong>{category.name}</strong>
+                                        <div className="ad-row-id">{category._id}</div>
+                                    </td>
+                                    <td>{moment(category.createdAt).format('MMM D, YYYY')}</td>
+                                    <td>{moment(category.updatedAt).format('MMM D, YYYY')}</td>
+                                    <td>
+                                        <div className="ad-table-actions">
+                                            <Link to={`/admin/category/update/${category._id}`} className="ad-btn ad-btn-sm ad-btn-outline" title="Update category">
+                                                <FontAwesomeIcon icon={faPen}/>
+                                            </Link>
+                                            <button onClick={() => remove(category._id)} className="ad-btn ad-btn-sm ad-btn-danger" title="Delete category">
+                                                <FontAwesomeIcon icon={faTrash}/>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className="ad-empty">
+                        <div className="ad-empty-icon"><FontAwesomeIcon icon={faLayerGroup}/></div>
+                        <h3>No categories found</h3>
+                        <p>Try a different search term, or add your first category.</p>
+                    </div>
+                )}
+
+                {filteredCategories.length > itemsPerPage && (
+                    <Pagination itemsPerPage={itemsPerPage} totalItems={filteredCategories.length} currentPage={currentPage} paginate={paginate}/>
+                )}
             </div>
-
-            {/*<h2 className="mb-4">Manage Categories</h2>*/}
-            {/*<div className="row">*/}
-            {/*    <div className="col-12">*/}
-            {/*        <h2 className="text-center"> Total of {categories.length} Categories </h2>*/}
-            {/*        <ul className="list-group">*/}
-            {/*            {categories.map((category, item) => (*/}
-            {/*                <li*/}
-            {/*                    key={item}*/}
-            {/*                    className="list-group-item d-flex justify-content-between align-items-center">*/}
-            {/*                    <div className="container">*/}
-            {/*                        <div className="row">*/}
-            {/*                            <div className="col-sm">*/}
-            {/*                                <strong>{category.name}</strong>*/}
-            {/*                            </div>*/}
-            {/*                            <div className="col-sm">*/}
-            {/*                                <Link to={`/admin/category/update/${category._id}`}>*/}
-            {/*                                    <button className="badge badge-warning badge-pill "  >*/}
-            {/*                                        Update Category*/}
-            {/*                                    </button>*/}
-            {/*                                </Link>*/}
-            {/*                            </div>*/}
-            {/*                            <div className="col-sm">*/}
-            {/*                                <button onClick={() => remove(category._id)} className="badge badge-danger badge-pill">*/}
-            {/*                                    Delete Category*/}
-            {/*                                </button>*/}
-            {/*                            </div>*/}
-            {/*                        </div>*/}
-            {/*                    </div>*/}
-            {/*                </li>*/}
-
-            {/*            ))}*/}
-            {/*        </ul>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-        </Layout>
-        <Ftr/>
-        </div>
-
+        </AdminLayout>
     );
-
 };
 
-
 export default ManageCategories;
-

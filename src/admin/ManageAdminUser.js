@@ -1,21 +1,25 @@
-import React, {Fragment, useEffect, useState} from "react";
-import Layout from "../core/Layout";
+import React, {useEffect, useState, useMemo} from "react";
+import AdminLayout from "./AdminLayout";
 import {isAuthenticate} from "../auth";
 import {updateUserState, getAllUsers, resetPassword} from "./ApiAdmin";
 import {confirmAlert} from "react-confirm-alert";
-import Ftr from "../core/Ftr";
 import {Link} from "react-router-dom";
-import {MDBBtn} from "mdbreact";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faKey, faSearch, faUsers, faPlus, faToggleOn, faToggleOff} from "@fortawesome/free-solid-svg-icons";
 import Pagination from "./Pagination";
+
+const initials = name => (name || "?")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0].toUpperCase())
+    .join("");
 
 const ManageAdminUser = () => {
     const [users, setAllUsers] = useState([]);
+    const [query, setQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    //get Current item
-    const indexOfLast = currentPage * itemsPerPage;
-    const indexOfFirst = indexOfLast - itemsPerPage;
-    const getCurrentItem = users.slice(indexOfFirst, indexOfLast);
+    const [itemsPerPage] = useState(10);
 
     const {user, token} = isAuthenticate();
 
@@ -23,8 +27,9 @@ const ManageAdminUser = () => {
         getAllUsers().then(data => {
             if (data.error) {
                 console.log(data.error)
-            } else
+            } else {
                 setAllUsers(data)
+            }
         })
     };
 
@@ -32,35 +37,34 @@ const ManageAdminUser = () => {
         fetchUsers();
     }, []);
 
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    }
+    const filteredUsers = useMemo(() => {
+        if (!query.trim()) return users;
+        const term = query.trim().toLowerCase();
+        return users.filter(u => u.name.toLowerCase().includes(term) || u.email.toLowerCase().includes(term));
+    }, [users, query]);
 
-    const [roles] = useState([
-        {roleName: "Admin", roleId: "1"}, {roleName: "Store Manager", roleId: "2"}
-    ]);
+    const indexOfLast = currentPage * itemsPerPage;
+    const indexOfFirst = indexOfLast - itemsPerPage;
+    const getCurrentItem = filteredUsers.slice(indexOfFirst, indexOfLast);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const onClickResetPassword = userId => {
-        resetPassword(userId, token, user._id)
-            .then(data => {
-                if (data.error) {
-                    console.log("error");
-                } else {
-                    confirmAlert({
-                        title: 'Password has reset. Email sent successfully!',
-                        buttons: [
-                            {
-                                label: 'OK',
-                            }
-                        ]
-                    });
-                }
-            })
+        resetPassword(userId, token, user._id).then(data => {
+            if (data.error) {
+                console.log("error");
+            } else {
+                confirmAlert({
+                    title: 'Password has reset. Email sent successfully!',
+                    buttons: [{label: 'OK'}]
+                });
+            }
+        })
     };
 
     const changeState = data => {
-        updateUserState(user._id, data, token). then(data => {
-            if(data.error){
+        updateUserState(user._id, data, token).then(data => {
+            if (data.error) {
                 console.log(data.error)
             } else {
                 fetchUsers()
@@ -68,63 +72,105 @@ const ManageAdminUser = () => {
         })
     };
 
-    const manageUser = () => (
-        <div className="row ml-4 mr-4 mb-5">
-            <div className="col-12 table-responsive">
-                <hr/>
-                <table className="table table-hover text-center">
-                    <thead className="thead-dark">
-                    <tr>
-                        <th scope="col">User Id</th>
-                        <th scope="col">User Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Change</th>
-                        <th scope="col">Password</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {getCurrentItem.map((user, item) => (
-                        <tr key={user._id}>
-                            <th scope="row">{user._id}</th>
-                            <td><strong>{user.name}</strong></td>
-                            <td><strong>{user.email}</strong></td>
-                            <td>{user.state === '1' ? <span className="badge badge-primary">Active</span> :
-                                <span className="badge badge-warning badge-pill">Inactive</span>}</td>
-                            <td>
-                                {user.state !== '1' ?
-                                    <button onClick={() => {changeState({_id: user._id, state: '1'})}} className="btn btn-sm btn-success">
-                                        Set Active
-                                    </button> :
-                                    <button onClick={() => {changeState({_id: user._id, state: '0'})}} className="btn btn-sm btn-danger">
-                                        Set Inactive
-                                    </button>}
-                            </td>
-                            <td>
-                                <button onClick={() => {onClickResetPassword(user._id)}} className="btn btn-sm btn-dark">
-                                    Reset Password
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-                <br/>
-                <Pagination itemsPerPage={itemsPerPage} totalItems={users.length} currentPage={currentPage} paginate={paginate}/>
-            </div>
-        </div>
-    );
+    const roleLabel = role => Number.parseInt(role, 10) === 1 ? 'Administrator' : 'Store Manager';
 
     return (
-        <div>
-        <Layout back={true} backText="Back to dashboard" to="/admin/dashboard" title="Manage Users" description={`Welcome back ${user.name}, Manage Users Now!`}
-                className="container-fluid">
-            <hr/>
-            {manageUser()}
-            <hr/>
-        </Layout>
-        <Ftr/>
-        </div>
+        <AdminLayout
+            back
+            backText="Back to dashboard"
+            to="/admin/dashboard"
+            title="Manage Users"
+            description="Review access and manage your admin team"
+            actions={(
+                <Link to="/create/user" className="ad-btn ad-btn-primary">
+                    <FontAwesomeIcon icon={faPlus}/> Add user
+                </Link>
+            )}
+        >
+            <div className="ad-card">
+                <div className="ad-toolbar">
+                    <div className="ad-search">
+                        <FontAwesomeIcon icon={faSearch}/>
+                        <input
+                            type="text"
+                            placeholder="Search by name or email…"
+                            value={query}
+                            onChange={e => {
+                                setQuery(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                        />
+                    </div>
+                    <div className="ad-toolbar-meta">
+                        <strong>{filteredUsers.length}</strong> of {users.length} users
+                    </div>
+                </div>
+
+                {getCurrentItem.length > 0 ? (
+                    <div className="ad-table-wrap">
+                        <table className="ad-table">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {getCurrentItem.map(u => (
+                                <tr key={u._id}>
+                                    <td>
+                                        <div className="ad-table-media">
+                                            <div className="ad-sidebar-avatar" style={{background: 'var(--ad-gradient-brand)', color: '#fff'}}>
+                                                {initials(u.name)}
+                                            </div>
+                                            <div>
+                                                <strong>{u.name}</strong>
+                                                <div style={{fontSize: '0.78rem', color: 'var(--ad-text-muted)'}}>{u.email}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span className="ad-pill ad-pill-purple">{roleLabel(u.role)}</span></td>
+                                    <td>
+                                        {u.state === '1'
+                                            ? <span className="ad-pill ad-pill-success">Active</span>
+                                            : <span className="ad-pill ad-pill-warning">Inactive</span>}
+                                    </td>
+                                    <td>
+                                        <div className="ad-table-actions">
+                                            {u.state !== '1' ? (
+                                                <button onClick={() => changeState({_id: u._id, state: '1'})} className="ad-btn ad-btn-sm ad-btn-success" title="Set active">
+                                                    <FontAwesomeIcon icon={faToggleOn}/> Activate
+                                                </button>
+                                            ) : (
+                                                <button onClick={() => changeState({_id: u._id, state: '0'})} className="ad-btn ad-btn-sm ad-btn-danger" title="Set inactive">
+                                                    <FontAwesomeIcon icon={faToggleOff}/> Deactivate
+                                                </button>
+                                            )}
+                                            <button onClick={() => onClickResetPassword(u._id)} className="ad-btn ad-btn-sm ad-btn-outline" title="Reset password">
+                                                <FontAwesomeIcon icon={faKey}/> Reset
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className="ad-empty">
+                        <div className="ad-empty-icon"><FontAwesomeIcon icon={faUsers}/></div>
+                        <h3>No users found</h3>
+                        <p>Try a different search term, or invite a new team member.</p>
+                    </div>
+                )}
+
+                {filteredUsers.length > itemsPerPage && (
+                    <Pagination itemsPerPage={itemsPerPage} totalItems={filteredUsers.length} currentPage={currentPage} paginate={paginate}/>
+                )}
+            </div>
+        </AdminLayout>
     );
 };
 
