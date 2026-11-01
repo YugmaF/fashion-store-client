@@ -70,8 +70,8 @@ const Checkout = ({products}) => {
                 </div>
             </div>
         ) : (
-            <Link to="/signin">
-                <button className="btn btn-primary col-sm-12">Sign in to Checkout</button>
+            <Link to="/signin" className="st-checkout-signin-link">
+                <button className="st-btn st-btn-primary st-btn-lg st-btn-block">Sign in to Checkout</button>
             </Link>
         );
     };
@@ -175,12 +175,12 @@ const Checkout = ({products}) => {
     const showDropIn = () => (
         <div onBlur={() => setData({...data, error: ''})}>
             {data.clientToken !== null && products.length > 0 ? (
-                <div>
-                    <div className="gorm-group">
-                        <label className="text-muted">Online order delivery address:</label>
+                <div className="st-checkout-pay">
+                    <div className="st-checkout-field">
+                        <label>Online order delivery address</label>
                         <textarea
                             onChange={handleAddress}
-                            className="form-control mb-3"
+                            className="st-input"
                             value={data.address}
                             placeholder="Type delivery address here..."
                         />
@@ -191,47 +191,32 @@ const Checkout = ({products}) => {
                             flow: 'vault'
                         }
                     }} onInstance={instance => data.instance = instance} />
-                    <button onClick={buy} className="btn btn-success btn-block">Pay</button>
-                    {/*<button className="btn btn-block btn-success mt-2"><Link className="nav-link" style={{color: '#ffffff'}} to="/cod">Cash On Delivery</Link></button>*/}
-                    <button onClick={cod} className="btn btn-block btn-success mt-2">Cash On Delivery</button>
+                    <button onClick={buy} className="st-btn st-btn-primary st-btn-lg st-btn-block">Pay</button>
+                    <button onClick={cod} className="st-btn st-btn-outline st-btn-lg st-btn-block">Cash On Delivery</button>
                 </div>
             ) : null}
         </div>
     );
 
     const showSuccess = success => (
-        <div className="alert alert-info" style={{display: success ? '' : 'none'}}>
-            Thanks! Your payment was successful!
-        </div>
+        success ? <div className="st-alert st-alert-success">Thanks! Your payment was successful!</div> : null
     );
 
-    const showLoading = loading => loading && <h2>Your transaction is processing! Please Wait...</h2>;
+    const showLoading = loading => loading && <div className="st-alert st-alert-info">Your transaction is processing! Please wait…</div>;
 
     return (
-        <div>
-            <div className="row">
-                <div className="col-lg-5 col-5">
-                    <h6>Subtotal: </h6>
-                </div>
-                <div className="col-lg-7 col-7 text-right">
-                    Rs {getTotal()}
-                </div>
+        <div className="st-checkout">
+            <div className="st-checkout-row">
+                <span>Subtotal</span>
+                <span>Rs {getTotal()}</span>
             </div>
-            <div className="row">
-                <div className="col-lg-5 col-5 mb-3">
-                    <h6 className="text-black-50">Discount: </h6>
-                </div>
-                <div className="col-lg-7 col-7 text-right">
-                    <h6 className="text-black-50">(-Rs {getDiscount()})</h6>
-                </div>
+            <div className="st-checkout-row st-checkout-muted">
+                <span>Discount</span>
+                <span>(-Rs {getDiscount()})</span>
             </div>
-            <div className="row">
-                <div className="col-lg-5 col-5 mb-3">
-                    <h5 className="font-weight-bold">Total: </h5>
-                </div>
-                <div className="col-lg-7 col-7 text-right mb-4">
-                    <h5 className="font-weight-bold">Rs {getDiscountedTotal()}</h5>
-                </div>
+            <div className="st-checkout-row st-checkout-total">
+                <span>Total</span>
+                <span>Rs {getDiscountedTotal()}</span>
             </div>
 
             {showLoading(data.loading)}

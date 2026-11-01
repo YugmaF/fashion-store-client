@@ -17,10 +17,11 @@ const Cart = () => {
 
     const showItems = items => {
         return (
-            <div>
-                {/*get item length*/}
-                <h3>Your cart have {`${items.length}`} items</h3>
-                <hr/>
+            <div className="st-cart-list">
+                <div className="st-cart-heading">
+                    <h3>Your cart has {`${items.length}`} items</h3>
+                    <span className="st-cart-sub">Select items to check out and adjust quantities.</span>
+                </div>
                 {/*loop through cart items to show items*/}
                 {items.map((product, i) => (
                     <CartItems
@@ -38,25 +39,20 @@ const Cart = () => {
     const showNoItemsSign = () => {
         return (
             !isAuthenticate() ? (
-                <div>
+                <div className="st-empty-state">
                     <h3>You don't have any items in your cart</h3>
-                    <h5>Have an account? Sign in to see your items.</h5>
+                    <p>Have an account? Sign in to see your items.</p>
 
-                    <div className="row mt-3">
-                        <div className="col-sm-6 mb-2">
-                            <Link to="/shop" className="btn st-btn-primary d-block">Start Shopping</Link>
-                        </div>
-                        <div className="col-sm-6 mb-2">
-                            <Link to="/signin" className="btn st-btn-outline d-block">Sign in</Link>
-                        </div>
+                    <div className="st-empty-actions">
+                        <Link to="/shop" className="st-btn st-btn-primary">Start Shopping</Link>
+                        <Link to="/signin" className="st-btn st-btn-outline">Sign in</Link>
                     </div>
                 </div>
             ) : (
-                <div>
+                <div className="st-empty-state">
                     <h3>You don't have any items in your cart. Let's get shopping!</h3>
-
-                    <div className="col-sm-12 mt-3">
-                        <Link to="/shop" className="btn st-btn-primary d-block">Start Shopping</Link>
+                    <div className="st-empty-actions">
+                        <Link to="/shop" className="st-btn st-btn-primary">Start Shopping</Link>
                     </div>
                 </div>
             )
@@ -64,14 +60,11 @@ const Cart = () => {
     };
 
     const showSummary = (items) => (
-        <div className="card">
-            <div className="card-body">
-                <div>
-                    <h3 className="mb-4">Your Cart Summary</h3>
-                    <hr/>
-                    <Checkout products={items}/>
-                </div>
+        <div className="st-cart-summary">
+            <div className="st-cart-summary-head">
+                <h3>Your Cart Summary</h3>
             </div>
+            <Checkout products={items}/>
         </div>
     );
 

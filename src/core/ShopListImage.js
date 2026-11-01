@@ -10,8 +10,7 @@ const ShopListImage = ({item, url}) => {
 
     return (
         <div className="product-img">
-            <Image className="pic-1" src={`${API}/${url}/image/${item._id}`} alt={item.name} fluid />
-            <Image className="pic-2" src={`${API}/${url}/image/${item._id}`} alt="" fluid />
+            <Image src={`${API}/${url}/image/${item._id}`} alt={item.name} fluid/>
         </div>
     );
 };

@@ -18,9 +18,11 @@ const Wishlist = () => {
 
     const showItems = wishlistitems => {
         return (
-            <div>
-                <h3>Your Wishlist has {`${wishlistitems.length}`} items</h3>
-                <hr/>
+            <div className="st-cart-list">
+                <div className="st-cart-heading">
+                    <h3>Your Wishlist has {`${wishlistitems.length}`} items</h3>
+                    <span className="st-cart-sub">Move items to your cart or keep them saved for later.</span>
+                </div>
                 {wishlistitems.map((product, i) => (
                     <WishlistItems
                         key={i}
@@ -37,35 +39,23 @@ const Wishlist = () => {
     const showNoItemsSign = () => {
         return (
             !isAuthenticate() ? (
-                <div>
-                    <h3 className="text-center mb-4">Have an account? Sign in to see your items.</h3>
+                <div className="st-empty-state">
+                    <h3>Have an account? Sign in to see your items.</h3>
 
-                    <div className="row mb-5 text-center">
-                        <div className="col-sm-6 mb-5 text-right">
-                            <button className="btn btn-lg btn-white text-primary w-50"><Link to="/shop">Start
-                                Shopping</Link>
-                            </button>
-                        </div>
-                        <div className="col-sm-6 mb-5 text-left">
-                            <button className="btn btn-lg btn-white w-50"><Link to="/signin"> Sign in </Link></button>
-                        </div>
+                    <div className="st-empty-actions">
+                        <Link to="/shop" className="st-btn st-btn-primary">Start Shopping</Link>
+                        <Link to="/signin" className="st-btn st-btn-outline">Sign in</Link>
                     </div>
                 </div>
             ) : (
                 wishlistitems.length > 0 ? (
                     showItems(wishlistitems)
                 ) : (
-                    <div>
-                        <h3 className="text-center">You don't have any items in your Wishlist. Let's get shopping!</h3>
-
-                        <div className="col-lg-12 text-center mb-5">
-                            <button className="btn btn-lg btn-white text-primary w-50"><Link to="/shop">Start
-                                Shopping</Link>
-                            </button>
+                    <div className="st-empty-state">
+                        <h3>You don't have any items in your Wishlist. Let's get shopping!</h3>
+                        <div className="st-empty-actions">
+                            <Link to="/shop" className="st-btn st-btn-primary">Start Shopping</Link>
                         </div>
-                        <br/>
-                        <br/>
-                        <br/>
                     </div>
                 )
             )

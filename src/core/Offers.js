@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Ftr from './Ftr';
 import NavBar from './NavBar';
@@ -30,18 +31,23 @@ const Offers = () => {
                     <span className="offers-kicker">LIMITED-TIME SAVINGS</span>
                     <h1>Promotional Offers</h1>
                     <p>Discover active deals across the FashionStore collection.</p>
+                    <Link className="btn st-btn-outline" to="/shop">Browse the collection</Link>
                 </div>
             </div>
             <div className="container offers-page">
                 {loading && (
-                    <div className="text-center py-5">
+                    <div className="st-loader">
                         <CircularProgress size={70}/>
                     </div>
                 )}
                 {error && <div className="alert alert-danger text-center">{error}</div>}
                 {!loading && !error && offers.length === 0 && (
-                    <div className="alert alert-info text-center">
-                        There are no active promotional offers right now.
+                    <div className="st-empty-state">
+                        <h3>No active offers right now</h3>
+                        <p>New deals land regularly — check back soon, or browse the full collection.</p>
+                        <div className="st-empty-actions">
+                            <Link to="/shop" className="st-btn st-btn-primary">Go to Shop</Link>
+                        </div>
                     </div>
                 )}
                 <div className="row">

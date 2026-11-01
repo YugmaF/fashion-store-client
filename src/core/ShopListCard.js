@@ -4,6 +4,8 @@ import ShopListImage from "./ShopListImage";
 import {addItem, updateItem} from "./CartHelper";
 import {updateUserCart, updateUserWishlist} from "./apiCore";
 import {isAuthenticate} from "../auth";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faEye, faHeart, faShoppingCart} from '@fortawesome/free-solid-svg-icons'
 import '../assets/shop_card_assets/bootstrap/css/bootstrap.min.css';
 import '../assets/shop_card_assets/css/Roboto.css';
 import '../assets/shop_card_assets/fonts/font-awesome.min.css';
@@ -14,23 +16,13 @@ import ShowCartImage from "./ShowCartImage";
 import {formatPrice, getDiscountedPrice, isPromotionActive} from "./pricing";
 
 const ShopListCard = ({
-                          product,
-                          showViewBtn = true,
-                          cartUpdate = false
-                      }) => {
+                           product,
+                           showViewBtn = true,
+                           cartUpdate = false
+                       }) => {
 
     const [redirect, setRedirect] = useState(false);
     const [redirectWish, setRedirectWish] = useState(false);
-
-    const showBtn = showViewBtn => {
-        return (
-            showViewBtn && (
-                <Link to={`/product/${product._id}`} className="mr-2">
-                    <button className="btn btn-outline-primary mt-2 mb-2">View Product</button>
-                </Link>
-            )
-        );
-    };
 
     const addToCart = () => {
         const {token, user} = isAuthenticate();
@@ -71,36 +63,31 @@ const ShopListCard = ({
     };
 
     const showRating = (rating) => {
-        if (rating.length > 0) {
+        if (rating && rating.length > 0) {
             const votedCount = rating.length;
             let rateSum = 0;
             rating.forEach(rate => {
                 rateSum += rate;
             });
             const averageRating = Math.ceil(rateSum / votedCount);
-            let startArray = [];
-            for (let i = 0; i < averageRating; i++)
-                startArray.push(<li key={i} className="fa fa-star fa-lg"></li>);
-            for (let i = averageRating; i < 5; i++)
-                startArray.push(<li key={i} className="fa fa-star-o fa-lg"></li>);
+            const stars = [];
+            for (let i = 1; i <= 5; i++) {
+                stars.push(
+                    <li key={i} className={"fa " + (i <= averageRating ? "fa-star" : "fa-star-o") + " st-star"}></li>
+                );
+            }
             return (
-                <div>
-                    <ul className="rating">
-                        {startArray} {'  '} <span className="page-item">({votedCount} {votedCount > 1 ? 'reviews' : 'review'})</span>
-                    </ul>
+                <div className="st-product-rating">
+                    <ul className="rating">{stars}</ul>
+                    <span className="st-rating-count">({votedCount})</span>
                 </div>
             );
-        } else {
-            return (
-                <ul className="rating">
-                    <li key={1} className="fa fa-star-o fa-lg"></li>
-                    <li key={2} className="fa fa-star-o fa-lg"></li>
-                    <li key={3} className="fa fa-star-o fa-lg"></li>
-                    <li key={4} className="fa fa-star-o fa-lg"></li>
-                    <li key={5} className="fa fa-star-o fa-lg"></li>
-                </ul>
-            );
         }
+        return (
+            <ul className="rating st-product-rating-empty">
+                {[1, 2, 3, 4, 5].map(i => <li key={i} className="fa fa-star-o st-star"></li>)}
+            </ul>
+        );
     };
 
     const makeRedirect = redirect => {
@@ -111,75 +98,80 @@ const ShopListCard = ({
 
     const showStock = (quantity) => {
         return quantity > 0 ? (
-            <span className="product-new-label primary-color">In Stock</span>
+            <span className="st-pill st-pill-success">In Stock</span>
         ) : (
-            <span className="product-new-label warning-color">Out of Stock</span>
+            <span className="st-pill st-pill-warning">Out of Stock</span>
         );
     };
 
     const showCartBtn = (quantity) => {
         return quantity > 0 ? (
-            <li><a href="" onClick={addToCart} className="fa fa-shopping-cart"> </a></li>
-        ) : (
-            ''
-        );
+            <button onClick={addToCart} aria-label="Add to cart" className="st-action-btn">
+                <FontAwesomeIcon icon={faShoppingCart}/>
+            </button>
+        ) : null;
     };
 
     const showWishListBtn = () => {
         return isAuthenticate() ? (
-            <li>
-                <a href="" onClick={addToWishlist} className="fa fa-heart"> </a>
-            </li>
-        ) : (
-            ''
-        );
+            <button onClick={addToWishlist} aria-label="Add to wishlist" className="st-action-btn">
+                <FontAwesomeIcon icon={faHeart}/>
+            </button>
+        ) : null;
     };
 
     const activePromotion = isPromotionActive(product);
 
     return (
-        <div className="product-grid7">
-            <div className="product-image7">
+        <div className="product-grid7 st-product-card">
+            <div className="product-image7 st-product-media">
                 {makeRedirect(redirect)}
                 {makeWishlistRedirect(redirectWish)}
-                <Link to={`/product/${product._id}`}>
+                <Link to={`/product/${product._id}`} className="st-product-link">
                     <ShopListImage item={product} url="product"/>
                 </Link>
-                <ul className="social">
-                    {makeRedirect(redirect)}
-                    <Link to={`/product/${product._id}`}>
-                        <li><a href="" className="fa fa-search"></a></li>
+
+                <div className="st-product-actions">
+                    <Link to={`/product/${product._id}`} aria-label="View product" className="st-action-btn">
+                        <FontAwesomeIcon icon={faEye}/>
                     </Link>
                     {showWishListBtn()}
                     {showCartBtn(product.quantity)}
-                </ul>
-                {showStock(product.quantity)}
-                {activePromotion && (
-                    <span className="product-offer-label">{product.discount}% OFF</span>
-                )}
+                </div>
+
+                <div className="st-product-badges">
+                    {showStock(product.quantity)}
+                    {activePromotion && (
+                        <span className="st-pill st-pill-promo">{product.discount}% OFF</span>
+                    )}
+                </div>
             </div>
-            <div className="product-content">
+
+            <div className="product-content st-product-body">
                 {activePromotion && product.promotionTitle && (
-                    <div className="promotion-title">{product.promotionTitle}</div>
+                    <span className="st-promo-title">{product.promotionTitle}</span>
                 )}
-                <Link to={`/product/${product._id}`} className="mr-2">
-                    <span style={{'fontSize': 'x-large'}} className="title"><a href="javascript : ;">{product.name.length > 20 ? product.name.slice(0, 18) + ' ..' : product.name}</a></span>
+                <Link to={`/product/${product._id}`} className="st-product-title">
+                    {product.name && product.name.length > 24 ? product.name.slice(0, 24) + '…' : product.name}
                 </Link>
-                <br/>
-                <Link to={`/product/${product._id}`} className="mr-2">
-                    <span className="title"><a
-                        href="javascript : ;">Category: {product.category && product.category.name}</a></span>
-                </Link>
+                <span className="st-product-cat">
+                    {product.category && product.category.name}
+                </span>
                 {showRating(product.rating)}
-                <div
-                    className="price">{product.currency + ' ' + formatPrice(getDiscountedPrice(product))}
-                    <span
-                        style={{"color": "red"}}>{activePromotion ? product.currency + ' ' + formatPrice(product.price) : ''}</span>
+                <div className="st-product-price">
+                    <span className="price">
+                        {product.currency + ' ' + formatPrice(getDiscountedPrice(product))}
+                    </span>
+                    {activePromotion && (
+                        <span className="st-product-old">
+                            {product.currency + ' ' + formatPrice(product.price)}
+                        </span>
+                    )}
                 </div>
                 {activePromotion && product.promotionEnd && (
-                    <div className="promotion-expiry">
+                    <span className="st-promo-expiry">
                         Ends {new Date(product.promotionEnd).toLocaleDateString()}
-                    </div>
+                    </span>
                 )}
             </div>
         </div>
