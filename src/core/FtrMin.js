@@ -5,7 +5,6 @@ import '../assets/footer_assets/css/styles.css';
 import {confirmAlert} from "react-confirm-alert";
 import {newsletterSignUp} from "../auth";
 import CircularProgress from "@material-ui/core/CircularProgress"; // Import css
-import FooterLogo from '../assets/Logos/Logo_Footer-v2.png';
 
 const FtrMin = () => {
     const [email, setEmail] = useState('');
@@ -52,57 +51,40 @@ const FtrMin = () => {
     }
 
     return (
-        <footer className="bg-dark text-white border-top border-info mt-5">
-            <div className="pt-5 pb-4 bg-light text-dark">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-6 col-lg-4 text-center text-md-left pb-4">
-                            <h2 className="mb-3"><img src={FooterLogo}/></h2>
-                            <p className="mb-1"><i className="fa fa-map-marker fa-fw"></i>&nbsp;Royal Road - Tamarin -
-                                Mauritius</p>
-                            <p className="mb-1"><i className="fa fa-phone fa-fw"></i>&nbsp;+230 12 34 56 78</p>
-                            <p className="mb-1"><i className="fa fa-envelope fa-fw"></i>&nbsp;<a className="text-dark"
-                                                                                                 href="mailto:contact@company.com">contact@company.com</a>
-                            </p>
-                        </div>
-                        <div className=" col-md-6 col-lg-4 text-center text-md-center pb-4">
-                            <p className="my-3">The Quarantine Fashion Store offers a wide range of clothes and accessories for everyone.
-                                Our vision is to provide our valued customers with quality products at an affordable price. </p>
-                        </div>
-                        <div className="col-lg-4 text-center text-lg-right pb-4">
-                            <h3 className="mb-0">Follow us</h3>
-                            <p className="mb-2">Subscribe to our newsletter</p>
-                            <form className="d-flex justify-content-center justify-content-lg-end">
-                                <div className="form-group w-75">
-                                    <div className="input-group"><input className="form-control mt-2" type="text" required=""
-                                                                        placeholder="Your email"
-                                                                        onChange={handleChange}
-                                                                        value={email ? email : ''}
-                                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}$"
-                                                                        inputMode="email" />
-                                        <div className="input-group-append">
-                                            <button className="btn btn-dark" onClick={subscribe} type="submit">{loading ? <CircularProgress size={15} /> : 'Go!'}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <div><a className="text-dark mx-2 mx-lg-0 ml-lg-3" href="#"><i
-                                className="fa fa-instagram fa-2x"></i></a><a className="text-dark mx-2 mx-lg-0 ml-lg-3"
-                                                                             href="#"><i
-                                className="fa fa-twitter fa-2x"></i></a><a className="text-dark mx-2 mx-lg-0 ml-lg-3"
-                                                                           href="#"><i
-                                className="fa fa-facebook-square fa-2x"></i></a>
-                                <a
-                                    className="text-dark mx-2 mx-lg-0 ml-lg-3" href="#"><i
-                                    className="fa fa-snapchat-ghost fa-2x"></i></a>
-                            </div>
+        <footer className="st-footer">
+            <div className="container">
+                <div className="row align-items-center">
+                    <div className="col-md-4 mb-4 text-center text-md-left">
+                        <h3 className="st-footer-title">Visit & Contact</h3>
+                        <p className="mb-1"><i className="fa fa-map-marker fa-fw"/>&nbsp;Royal Road - Tamarin - Mauritius</p>
+                        <p className="mb-1"><i className="fa fa-phone fa-fw"/>&nbsp;+94 75 5172 666</p>
+                        <p className="mb-1"><i className="fa fa-envelope fa-fw"/>&nbsp;<a href="mailto:contact@company.com">quarantinefashionstore@google.com</a></p>
+                    </div>
+                    <div className="col-md-4 mb-4 text-center">
+                        <p className="mb-0">The Quarantine Fashion Store offers a wide range of clothes and accessories for everyone.
+                            Our vision is to provide our valued customers with quality products at an affordable price.</p>
+                    </div>
+                    <div className="col-md-4 mb-4 text-center text-md-right">
+                        <h3 className="st-footer-title">Follow us</h3>
+                        <p className="mb-2">Subscribe to our newsletter</p>
+                        <form className="st-newsletter">
+                            <input type="text" placeholder="Your email"
+                                   onChange={handleChange}
+                                   value={email ? email : ''}
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}$"
+                                   inputMode="email"/>
+                            <button className="btn st-btn-primary" onClick={subscribe} type="submit">{loading ? <CircularProgress size={18} color="inherit"/> : 'Go!'}</button>
+                        </form>
+                        <div className="st-footer-social mt-3">
+                            <a href="#" aria-label="Instagram"><i className="fa fa-instagram fa-2x"/></a>
+                            <a href="#" aria-label="Twitter"><i className="fa fa-twitter fa-2x"/></a>
+                            <a href="#" aria-label="Facebook"><i className="fa fa-facebook-square fa-2x"/></a>
+                            <a href="#" aria-label="Snapchat"><i className="fa fa-snapchat-ghost fa-2x"/></a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="text-center text-lg-left py-2 small bg-dark text-info font-italic">
-                <div className="container">
-                    <p className="m-0">© 2020 Company ~ All rights reserved</p>
+                <div className="st-footer-bottom">
+                    © 2020 Quarantine Fashion Store ~ All rights reserved
                 </div>
             </div>
         </footer>

@@ -54,7 +54,6 @@ const ProductByCategory = ({match}) => {
                 <div>
                     <div className="shopping-grid">
                         <div className="container">
-                            <h3 className="font-weight-bold" align="center">SHOP BY CATEGORIES</h3>
                             <div className="row">
                                 {products.map((product, i) => (
                                     <div key={i} className="col-md-6 col-lg-3 col-xs-3 col-sm-6 mb-3">

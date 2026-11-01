@@ -1,15 +1,14 @@
 import React from "react";
-import '../assets/404_not_found/css/style.css';
+import {Link} from "react-router-dom";
 
 const Page404 = () => {
     return (
-        <div id="notfound">
-            <div className="notfound">
-                <div className="notfound-404">
-                    <h3>Oops! Page not found</h3>
-                    <h1><span>4</span><span>0</span><span>4</span></h1>
-                </div>
-                <h2>we are sorry, but the page you requested was not found</h2>
+        <div className="st-notfound">
+            <div className="st-notfound-panel">
+                <h1 className="st-notfound-code">404</h1>
+                <h2>Oops! Page not found</h2>
+                <p>We are sorry, but the page you requested was not found.</p>
+                <Link to="/" className="st-btn st-btn-primary">Back to Home</Link>
             </div>
         </div>
     );
