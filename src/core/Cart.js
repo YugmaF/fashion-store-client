@@ -42,14 +42,12 @@ const Cart = () => {
                     <h3>You don't have any items in your cart</h3>
                     <h5>Have an account? Sign in to see your items.</h5>
 
-                    <div className="row">
-                        <div className="col-sm-6">
-                            <button className="btn btn-lg btn-white text-primary w-100"><Link to="/shop">Start
-                                Shopping</Link>
-                            </button>
+                    <div className="row mt-3">
+                        <div className="col-sm-6 mb-2">
+                            <Link to="/shop" className="btn st-btn-primary d-block">Start Shopping</Link>
                         </div>
-                        <div className="col-sm-6">
-                            <button className="btn btn-lg btn-white w-100"><Link to="/signin"> Sign in </Link></button>
+                        <div className="col-sm-6 mb-2">
+                            <Link to="/signin" className="btn st-btn-outline d-block">Sign in</Link>
                         </div>
                     </div>
                 </div>
@@ -57,10 +55,8 @@ const Cart = () => {
                 <div>
                     <h3>You don't have any items in your cart. Let's get shopping!</h3>
 
-                    <div className="col-sm-12">
-                        <button className="btn btn-lg btn-white text-primary w-50"><Link to="/shop">Start
-                            Shopping</Link>
-                        </button>
+                    <div className="col-sm-12 mt-3">
+                        <Link to="/shop" className="btn st-btn-primary d-block">Start Shopping</Link>
                     </div>
                 </div>
             )

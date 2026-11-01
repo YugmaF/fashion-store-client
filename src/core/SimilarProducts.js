@@ -89,12 +89,12 @@ const SimilarProducts = (props) => {
     };
 
     return (
-        <div>
-            <h4 class="font-weight-bold mt-2 mb-5">Similar products</h4>
-            {!populateSimilarProducts() ? <div className="alert alert-info alert-dismissible fade show" role="alert">
+        <div className="similar-products-section">
+            <h4 className="st-section-title mt-2 mb-4">Similar products</h4>
+            {!populateSimilarProducts() ? <div className="alert alert-info" role="alert">
                 <strong>No related products!</strong>
             </div> : ''}
-            <div class="row pb-5 mb-4">
+            <div className="row">
                 {populateSimilarProducts()}
             </div>
         </div>

@@ -29,7 +29,8 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: '100vh',
+        minHeight: '100vh',
+        background: '#f6f6fa',
     },
     image: {
         backgroundImage: 'url(https://image.freepik.com/free-photo/elegant-woman-costume-hat-with-handbag-room_23-2148068414.jpg)',
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: '#e73c7e',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -117,7 +118,7 @@ const Signup = () => {
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
             <Grid item xs={false} sm={4} md={7} className={classes.image}/>
-            <Grid className="p-5" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <Grid className="p-5 st-auth-panel" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon/>

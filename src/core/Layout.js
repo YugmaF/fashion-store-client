@@ -13,24 +13,24 @@ const Layout = ({
                     to = '',
                     children
                 }) => (
-    <div>
-        <div className="card mb-5 p-4" style={{background: '#efefef'}}>
+    <div className="container">
+        <div className="st-page-hero">
             {
-                back ? <div className="row">
-                    <div className="col-1 mt-3 ml-2">
+                back ? <div className="d-flex align-items-center gap-3">
+                    <div className="mr-3">
                         <Tooltip title={backText} placement="bottom-end">
                             <Link to={to}>
-                                <FontAwesomeIcon size={"2x"} icon={faArrowLeft}/>
+                                <span className="btn st-btn-outline"><FontAwesomeIcon icon={faArrowLeft}/></span>
                             </Link>
                         </Tooltip>
                     </div>
-                    <div className="col-10">
-                        <h2 className="ml-2">{title}</h2>
-                        <p className="lead ml-2">{description}</p>
+                    <div className="mr-3">
+                        <h1>{title}</h1>
+                        <p>{description}</p>
                     </div>
                 </div> : <div>
-                    <h2 className="ml-2">{title}</h2>
-                    <p className="lead ml-2">{description}</p>
+                    <h1>{title}</h1>
+                    <p>{description}</p>
                 </div>
             }
         </div>

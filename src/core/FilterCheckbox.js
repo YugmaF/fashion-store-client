@@ -22,9 +22,11 @@ const FilterCheckbox = ({categories, handleFilters}) => {
     };
 
     return categories.map((category, index) => (
-            <li className="list-unstyled" key={index}>
-                <input onChange={handleCheck(category)} value={checked.indexOf(category._id === -1)}  type="checkbox" className="form-check-input"/>
-                <label className="form-check-label">{category.name}</label>
+            <li className="st-filter-item" key={index}>
+                <label className="st-filter-label">
+                    <input onChange={handleCheck(category)} value={checked.indexOf(category._id === -1)}  type="checkbox" className="st-filter-check"/>
+                    <span>{category.name}</span>
+                </label>
             </li>
     ));
 };

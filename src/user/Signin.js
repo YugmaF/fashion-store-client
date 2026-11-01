@@ -33,7 +33,8 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: '100vh',
+        minHeight: '100vh',
+        background: '#f6f6fa',
     },
     image: {
         backgroundImage: 'url(http://la-madleine.de/wp-content/uploads/2019/07/Luxury-Shopping-1520x1024.jpg)',
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: '#e73c7e',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -226,7 +227,7 @@ const Signin = () => {
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
             <Grid item xs={false} sm={4} md={7} className={classes.image}/>
-            <Grid className="p-5" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <Grid className="p-5" item xs={12} sm={8} md={5} className="st-auth-panel" component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon/>

@@ -59,7 +59,7 @@ const ShopPage = () => {
     const loadMoreButton = () => {
         return (
             loadedSize > 0 && loadedSize >= limitTo && (
-                <button onClick={loadMore} className="btn btn-warning mb-5">Load More</button>
+                <button onClick={loadMore} className="btn st-btn-primary mb-5">Load More</button>
             )
         );
     };
@@ -92,42 +92,38 @@ const ShopPage = () => {
 
     const appendView = () => {
         return (
-            <div className="mt-4">
-                <div className="row container-fluid">
+            <div className="mt-2">
+                <div className="row">
                     <div
-                        className="text-left col-sm-12 col-md-12 col-lg-2 col-xl-2 mb-5">
+                        className="col-sm-12 col-md-12 col-lg-2 col-xl-2 mb-5">
 
                         {
                             showViewCategories ?
-                                <div>
-                                    <div className="card">
-                                        <div className="card-header" >Filter by category</div>
-                                        <div className="card-body">
-                                            <ul>
-                                                <FilterCheckbox categories={categories} handleFilters={filters => handleFilters(filters, 'category')}/>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                <div className="st-card">
+                                    <div className="st-section-title" style={{fontSize: "1rem"}}>Filter by category</div>
+                                    <ul className="list-unstyled">
+                                        <FilterCheckbox categories={categories} handleFilters={filters => handleFilters(filters, 'category')}/>
+                                    </ul>
                                 </div>
                                 : ''
                         }
                     </div>
 
-                    <div className="col-sm-12 col-md-12 col-lg-10 col-xl-10">
+                    <div className="col-lg-10 col-xl-10">
                         {
                             showViewProducts ?
                                 <div>
-                                    <div className="row">
+                                    <div className="row" style={{rowGap: "26px"}}>
                                         {
                                             filteredProducts.map((product, i) => (
-                                                <div className="col-xl-3 col-lg-4 col-md-6 mb-4">
+                                                <div key={i} className="col-xl-3 col-lg-4 col-md-6 mb-4">
                                                     <ShopListCard product={product}/>
                                                 </div>
                                             ))
                                         }
                                     </div>
                                 </div> :
-                                <div className="container-fluid text-center">
+                                <div className="st-loader">
                                     <CircularProgress size={80}/>
                                 </div>
                         }
@@ -143,7 +139,14 @@ const ShopPage = () => {
     return (
         <div>
             <NavBar/>
-            <hr/>
+            <div className="container">
+                <div className="st-page-hero">
+                    <div>
+                        <h1>The Collection</h1>
+                        <p>Browse our full range of fashion essentials, filters on the left.</p>
+                    </div>
+                </div>
+            </div>
             {appendView()}
         </div>
     );

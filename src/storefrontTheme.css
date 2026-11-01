@@ -1,0 +1,765 @@
+/* ════════════════════════════════════════════════════════════════════
+   Fashion Store — Storefront Design System
+   A cohesive, modern visual language for the public storefront,
+   created to match the __already-modernized__ admin dashboard.
+   Prefix: `st-` (Storefront Design). Imported LAST in index.js so
+   it consistently overrides Bootstrap / MDB / per-section asset css.
+   Brand gradient (pink → blue) and navy surfaces mirror src/admin.
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+    --st-navy-900: #14141f;
+    --st-navy-800: #1a1a2e;
+    --st-navy-700: #0f3460;
+    --st-purple: #533483;
+    --st-pink: #e73c7e;
+    --st-blue: #23a6d5;
+    --st-teal: #23d5ab;
+    --st-amber: #f5a623;
+
+    --st-bg: #f6f6fa;
+    --st-surface: #ffffff;
+    --st-border: #ececf2;
+    --st-text: #1a1a2e;
+    --st-text-muted: #8a8a9a;
+    --st-text-soft: #b4b4c0;
+
+    --st-radius-lg: 20px;
+    --st-radius: 15px;
+    --st-radius-sm: 10px;
+    --st-shadow: 0 3px 16px rgba(20, 20, 31, 0.08);
+    --st-shadow-lg: 0 18px 44px rgba(20, 20, 31, 0.16);
+    --st-gradient-brand: linear-gradient(135deg, var(--st-pink) 0%, var(--st-blue) 100%);
+    --st-gradient-dark: linear-gradient(160deg, var(--st-navy-900) 0%, var(--st-navy-800) 50%, var(--st-navy-700) 90%, var(--st-purple) 120%);
+}
+
+/* ─── Base & typography ───────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   THEME GATING
+   The modern visual language below is applied only when the root
+   element carries data-st-theme="modern". The storefront ships with
+   two user-selectable themes — "Modern" (this design system) and
+   "Original" (the legacy Bootstrap / MDB look). The toggle lives in
+   the top navigation bar (Menu.js) and persists the choice.
+   The generic `st-*` structural rules above/below are not gated: they
+   define the improved page chrome that is present in both themes.
+   ═══════════════════════════════════════════════════════════════════ */
+
+html[data-st-theme="modern"] body {
+    background: var(--st-bg);
+    color: var(--st-text);
+    font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.1px;
+}
+
+/* ─── Store header / logo row (NavBar) ────────────────────────────── */
+.st-header {
+    background: var(--st-gradient-dark);
+    color: #fff;
+    padding: 18px 0;
+}
+
+.st-header .navbar-brand,
+.st-header .nav-link { color: rgba(255, 255, 255, 0.85); }
+
+.st-header .navbar-brand:hover,
+.st-header .nav-link:hover { color: #fff; }
+
+.st-header-logo-row {
+    background: var(--st-surface);
+    border-bottom: 1px solid var(--st-border);
+    padding: 20px 0;
+}
+
+/* ─── Primary navigation (Menu) ───────────────────────────────────── */
+.st-topnav {
+    background: #12121c;
+    box-shadow: 0 10px 30px rgba(18, 18, 28, 0.25);
+    padding: 10px 16px;
+}
+
+.st-topnav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.st-topnav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.st-topnav .nav-link.st-active {
+    background: var(--st-gradient-brand);
+    color: #fff;
+}
+
+/* cart / wishlist badge — modern pill */
+.st-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--st-gradient-brand);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+.st-topnav .st-icon-btn {
+    position: relative;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transition: background 0.15s ease;
+}
+
+.st-topnav .st-icon-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+.st-auth-link {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background 0.15s ease;
+}
+
+.st-auth-link:hover { background: rgba(255, 255, 255, 0.16); }
+
+.st-auth-cta {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background: var(--st-gradient-brand);
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: 0 6px 16px rgba(231, 60, 126, 0.35);
+}
+
+/* ─── Hero / carousel ─────────────────────────────────────────────── */
+.st-hero-section { padding: 0 0 8px; }
+
+.st-hero-caption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, rgba(20, 20, 31, 0.82) 0%, rgba(20, 20, 31, 0.5) 50%, rgba(20, 20, 31, 0.65) 100%);
+    color: #fff;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.st-hero-caption .st-kicker {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 6px;
+}
+
+.st-hero-caption h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 6px 0 10px;
+}
+
+.st-hero-caption p {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    max-width: 560px;
+}
+
+html[data-st-theme="modern"] .carousel .carousel-control-next,
+.carousel .carousel-control-prev {
+    width: auto;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    height: 56px;
+    width: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.9;
+}
+
+html[data-st-theme="modern"] .carousel-indicators { bottom: 8px; }
+html[data-st-theme="modern"] .carousel-indicators li { background-color: rgba(255, 255, 255, 0.35); }
+.carousel-indicators .active { background-color: #fff; }
+
+/* ─── Section titles ──────────────────────────────────────────────── */
+.st-section {
+    margin-top: 56px;
+}
+
+.st-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.st-section-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--st-text);
+    margin: 0;
+    position: relative;
+    padding-left: 16px;
+}
+
+.st-section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    border-radius: 3px;
+    background: var(--st-gradient-brand);
+}
+
+.st-section-sub {
+    color: var(--st-text-muted);
+    margin: 0 0 6px;
+}
+
+/* ─── Category cards ──────────────────────────────────────────────── */
+.st-categories-grid {
+    row-gap: 26px;
+}
+
+html[data-st-theme="modern"] .team-grid { background: var(--st-bg) !important; }
+
+html[data-st-theme="modern"] .team-grid .item .box {
+    border-radius: var(--st-radius-lg) !important;
+    box-shadow: var(--st-shadow) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+html[data-st-theme="modern"] .team-grid .item .box:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--st-shadow-lg);
+}
+
+html[data-st-theme="modern"] .team-grid .item .cover {
+    border-radius: 0 0 14px 14px;
+    background: linear-gradient(transparent, rgba(20, 20, 31, 0.9));
+    min-height: 86px;
+    padding: 48px 12px 14px;
+}
+
+html[data-st-theme="modern"] .team-grid .item .title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+/* ─── Product cards (ShopListCard) ────────────────────────────────── */
+html[data-st-theme="modern"] .shopping-grid h3,
+html[data-st-theme="modern"] .shp-section-title { font-size: 1.45rem; font-weight: 800; }
+
+html[data-st-theme="modern"] .product-grid7 {
+    background: var(--st-surface) !important;
+    border-radius: var(--st-radius) !important;
+    border: 1px solid var(--st-border) !important;
+    overflow: hidden;
+    box-shadow: var(--st-shadow) !important;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+html[data-st-theme="modern"] .product-grid7:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--st-shadow-lg);
+}
+
+html[data-st-theme="modern"] .product-grid7 .product-image7 {
+    border: none !important;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none !important;
+}
+
+html[data-st-theme="modern"] .product-grid7 .product-image7 img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+html[data-st-theme="modern"] .product-grid7:hover .product-image7 img { transform: scale(1.06); }
+
+html[data-st-theme="modern"] .product-grid7 .social li a {
+    background: var(--st-gradient-brand) !important;
+    color: #fff !important;
+    font-size: 14px;
+    line-height: 38px;
+    height: 38px;
+    width: 38px;
+    box-shadow: 0 6px 14px rgba(231, 60, 126, 0.4);
+}
+
+html[data-st-theme="modern"] .product-grid7 .social li a:hover {
+    background: var(--st-blue);
+    color: #fff;
+}
+
+html[data-st-theme="modern"] .product-grid7 .product-new-label {
+    background: var(--st-navy-800);
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    letter-spacing: 0.02em;
+}
+
+html[data-st-theme="modern"] .product-grid7 .product-new-label.pj-warning {
+    background: #fff1c9;
+    color: #8a6400;
+}
+
+html[data-st-theme="modern"] .product-grid7 .product-content {
+    text-align: left;
+    padding: 14px 16px 16px;
+    flex: 1;
+}
+
+html[data-st-theme="modern"] .product-grid7 .title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--st-text);
+    line-height: 1.3;
+}
+
+html[data-st-theme="modern"] .product-grid7 .title a { color: var(--st-text); }
+.product-grid7 .title a:hover { color: var(--st-pink); }
+
+html[data-st-theme="modern"] .product-grid7 .st-category-label {
+    font-size: 0.72rem;
+    color: var(--st-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+html[data-st-theme="modern"] .product-grid7 .rating { color: var(--st-amber); font-size: 0.82rem; }
+
+html[data-st-theme="modern"] .product-grid7 .price {
+    color: var(--st-navy-900);
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+html[data-st-theme="modern"] .product-grid7 .price .st-old-price,
+.product-grid7 .price span {
+    color: var(--st-text-soft);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: line-through;
+}
+
+.promotion-rate-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--st-gradient-brand);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.product-promotion-summary {
+    background: linear-gradient(135deg, #fff 0%, #ffedf5 100%);
+    border-left: 4px solid var(--st-pink);
+    border-radius: var(--st-radius-sm);
+}
+
+/* cart / wishlist action buttons on card */
+.product-grid7 .st-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.st-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.st-btn-primary {
+    background: var(--st-gradient-brand);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(231, 60, 126, 0.35);
+}
+
+.st-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(231, 60, 126, 0.45);
+}
+
+.st-btn-outline {
+    background: #fff;
+    color: var(--st-text);
+    border: 1px solid var(--st-border);
+}
+
+.st-btn-outline:hover { background: var(--st-bg); }
+
+/* ─── Offers page ─────────────────────────────────────────────────── */
+html[data-st-theme="modern"] .offers-hero {
+    border-radius: 0;
+    background: var(--st-gradient-dark);
+    margin-bottom: 40px;
+    padding: 64px 16px;
+}
+
+html[data-st-theme="modern"] .offers-hero h1 { font-size: 2.6rem; font-weight: 800; }
+html[data-st-theme="modern"] .offers-kicker { color: var(--st-pink); }
+
+/* ─── Footer ──────────────────────────────────────────────────────── */
+footer.st-footer {
+    background: var(--st-gradient-dark);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 56px 0 26px;
+    margin-top: 0;
+}
+
+.st-footer .st-footer-title {
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.st-footer .st-footer-title::after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--st-gradient-brand);
+}
+
+.st-footer a { color: rgba(255, 255, 255, 0.75); text-decoration: none; }
+.st-footer a:hover { color: #fff; }
+
+.st-footer .st-newsletter {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    max-width: 460px;
+    margin: 0 auto;
+}
+
+.st-footer .st-newsletter-row { text-align: center; }
+
+.st-footer .st-newsletter input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    outline: none;
+}
+
+.st-footer .st-footer-social a {
+    color: rgba(255, 255, 255, 0.8);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin: 0 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.st-footer .st-footer-social a:hover {
+    background: var(--st-gradient-brand);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.st-footer .st-footer-bottom {
+    text-align: center;
+    padding: 14px 0;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.8rem;
+}
+
+/* ─── Layout / page header ────────────────────────────────────────── */
+.st-page-hero {
+    background: var(--st-gradient-dark);
+    color: #fff;
+    border-radius: var(--st-radius-lg);
+    padding: 30px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.st-page-hero h1 { margin: 0 0 6px; font-size: 1.5rem; font-weight: 800; }
+.st-page-hero p { margin: 0; color: rgba(255, 255, 255, 0.75); font-size: 0.9rem; }
+
+.st-card {
+    background: var(--st-surface);
+    border-radius: var(--st-radius-lg);
+    box-shadow: var(--st-shadow);
+    border: 1px solid var(--st-border);
+    padding: 24px;
+}
+
+/* Bootstrap card body modern override (used on cart summary etc.) */
+html[data-st-theme="modern"] .card {
+    border-radius: var(--st-radius);
+    border: 1px solid var(--st-border);
+    box-shadow: var(--st-shadow);
+}
+html[data-st-theme="modern"] .card-header { background: transparent; border: none; font-weight: 700; }
+html[data-st-theme="modern"] .card-body { color: var(--st-text); }
+
+/* ─── Buttons (global modernize) ──────────────────────────────────── */
+html[data-st-theme="modern"] .btn {
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+html[data-st-theme="modern"] .btn-orange {
+    background: var(--st-gradient-brand);
+    color: #fff;
+    border-radius: 999px;
+}
+
+html[data-st-theme="modern"] .btn-warning {
+    background: var(--st-amber);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 999px;
+}
+
+html[data-st-theme="modern"] .btn-outline-dark { border-radius: 999px; }
+
+/* ─── Auth pages (Sign in / Sign up) ──────────────────────────────── */
+.st-auth-shell {
+    background: var(--st-bg);
+    min-height: 100vh;
+}
+
+.st-auth-panel {
+    background: var(--st-surface);
+    border-radius: var(--st-radius-lg);
+    box-shadow: var(--st-shadow-lg);
+    border: 1px solid var(--st-border);
+}
+
+html[data-st-theme="modern"] .MuiButton-containedPrimary {
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: var(--st-gradient-brand);
+    box-shadow: 0 8px 20px rgba(231, 60, 126, 0.35);
+    font-weight: 700;
+}
+
+html[data-st-theme="modern"] .MuiTextField-root { border-radius: var(--st-radius-sm); }
+
+/* ─── About us (Team Boxed) ───────────────────────────────────────── */
+html[data-st-theme="modern"] .team-boxed { background: var(--st-bg); }
+html[data-st-theme="modern"] .team-boxed h2 { font-weight: 800; }
+html[data-st-theme="modern"] .team-boxed .item .box {
+    background: var(--st-surface);
+    border-radius: var(--st-radius-lg);
+    box-shadow: var(--st-shadow);
+    border: 1px solid var(--st-border);
+    padding: 28px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+html[data-st-theme="modern"] .team-boxed .item .box:hover { transform: translateY(-4px); box-shadow: var(--st-shadow-lg); }
+html[data-st-theme="modern"] .team-boxed .item img {
+    border-radius: 50%;
+    border: 3px solid var(--st-pink);
+    max-width: 130px;
+    object-fit: cover;
+}
+html[data-st-theme="modern"] .team-boxed .item .title { color: var(--st-pink); letter-spacing: 1.5px; }
+
+/* Alerts → soft modern */
+html[data-st-theme="modern"] .alert {
+    border-radius: var(--st-radius-sm);
+    border: none;
+    box-shadow: var(--st-shadow);
+}
+html[data-st-theme="modern"] .alert-danger { background: #fdecea; color: #c0392b; }
+
+/* Confirm alert (subscription etc.) */
+html[data-st-theme="modern"] .react-confirm-alert-overlay { background: rgba(20, 20, 31, 0.45); }
+html[data-st-theme="modern"] .react-confirm-alert {
+    border-radius: var(--st-radius-lg);
+    box-shadow: var(--st-shadow-lg);
+}
+
+/* ─── Similar products & Bootstrap cards v2 ───────────────────────── */
+html[data-st-theme="modern"] .similar-products-section .card {
+    border-radius: var(--st-radius);
+    border: none;
+    overflow: hidden;
+    box-shadow: var(--st-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+html[data-st-theme="modern"] .similar-products-section .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--st-shadow-lg);
+}
+
+/* ─── Spinner / loading ───────────────────────────────────────────── */
+.st-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+}
+
+/* ─── Utilities ───────────────────────────────────────────────────── */
+.st-cat-pill {
+    display: inline-block;
+    background: var(--st-bg);
+    color: var(--st-text-muted);
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 4px;
+}
+
+.st-divider {
+    height: 1px;
+    background: var(--st-border);
+    margin: 22px 0;
+}
+
+/* ─── Theme picker (navbar) ───────────────────────────────────────── */
+.st-theme-picker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 14px;
+}
+.st-theme-picker-icon {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+}
+.st-theme-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 68px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease, color 0.15s ease;
+    user-select: none;
+}
+.st-theme-option:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+.st-theme-option-active {
+    background: var(--st-gradient-brand);
+    color: #fff;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Original theme guard ────────────────────────────────────────── */
+/* When the legacy theme is active, keep the new chrome readable but
+   let the native Bootstrap / MDB surface styles show through. */
+html[data-st-theme="original"] body { background: #fff; }
+.st-filter-item { margin: 10px 0; }
+.st-filter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--st-text);
+}
+.st-filter-check {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--st-pink);
+    cursor: pointer;
+}
+
+/* indicate the "Active" nav link for Bootstrap navbar */
+html[data-st-theme="modern"] .navbar-dark .navbar-nav .nav-link.active { color: #fff; }
+
+/* ─── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .st-hero-caption h1 { font-size: 2.1rem; }
+    .offers-hero h1 { font-size: 2rem; }
+    .st-section-head { flex-direction: column; align-items: flex-start; }
+    .st-footer { text-align: center; }
+}
+
+/* Fix material-less navbar collapse dropdown toggle */
+@media (max-width: 992px) {
+    .navbar-collapse { max-height: 100vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-grid7, .team-grid .item .box, .similar-products-section .card { transition: none; }
+    html { scroll-behavior: auto; }
+}

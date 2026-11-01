@@ -97,24 +97,23 @@ const Product = props => {
     //check whether product have stocks
     const showStock = (quantity) => {
         return quantity > 0 ? ( //if quantity more than 0
-            <span className="badge badge-primary badge-pill">In Stock</span>
+            <span className="st-cat-pill" style={{background: "#d9f6e4", color: "#1e8e4f", fontWeight: 700}}>In Stock</span>
         ) : (
-            <span className="badge badge-warning badge-pill">Out of Stock</span>
+            <span className="st-cat-pill" style={{background: "#fff1c9", color: "#8a6400", fontWeight: 700}}>Out of Stock</span>
         );
     };
 
     //show add to cart btn
     const showAddToCartBtn = (quantity) => {
         return quantity > 0 &&  //show only product have stock
-            <button onClick={addToCart} className="btn bg-dark text-white mt-2 mb-2" style={{width: 156}}>Add to
-                Cart</button>;
+            <button onClick={addToCart} className="btn st-btn-primary mt-2 mb-2">Add to Cart</button>;
     };
 
     //show wish list btn
     const showWishListBtn = () => {
         return isAuthenticate() ? (
             <button onClick={addToWishlist}
-                    className="btn btn-orange text-white mt-2 mb-2">Add to Wish List
+                    className="btn st-btn-outline mt-2 mb-2">Add to Wish List
             </button>
         ) : ''
     };
@@ -143,10 +142,10 @@ const Product = props => {
                                     </div>
                                 )}
 
-                                <div className="row pl-3">
-                                    <h3 className="red-text mt-3 mr-3 font-weight-bolder">{product.currency} {formatPrice(getDiscountedPrice(product))}</h3>
-                                    <h3 style={{textDecoration: 'line-through'}}
-                                        className="text-black-50 mt-3 mr-3 font-weight-bolder">{activePromotion ? product.currency + ' ' + formatPrice(product.price) : ''}</h3>
+                                <div className="d-flex align-items-center pl-3 my-3">
+                                    <h3 className="text-dark my-2 mr-3 font-weight-bolder" style={{fontSize: "1.9rem"}}>{product.currency} {formatPrice(getDiscountedPrice(product))}</h3>
+                                    <h4 style={{textDecoration: 'line-through'}}
+                                        className="text-muted my-2 mr-3">{activePromotion ? product.currency + ' ' + formatPrice(product.price) : ''}</h4>
                                 </div>
 
                                 <div className="mt-5">

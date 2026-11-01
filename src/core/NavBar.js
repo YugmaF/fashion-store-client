@@ -18,27 +18,23 @@ const NavBar = () => {
         });
     }, []);
 
-    const fontColor = () => {
-        return {color: '#000000', fontSize: 15}
-    };
-
     return (
-        <div className="row" style={{background: '#fefefe'}}>
-            <div className="col-lg-3 m-5">
-                <Image src={MenuLogoV1} fluid/>
+        <div className="st-header-logo-row row">
+            <div className="col-lg-3 col-md-12 text-center text-md-left py-2">
+                <Image src={MenuLogoV1} fluid style={{maxHeight: 44}}/>
             </div>
-            <div className="col-lg-5 text-center mt-lg-5">
-                <div className="row people mt-lg-4">
+            <div className="col-lg-6 text-center my-2">
+                <div className="row people justify-content-center">
                     {categories.map(category => (
-                        <div key={category._id} className="col item">
+                        <div key={category._id} className="col-auto item px-2">
                             <Link to={`/product/category/${category._id}`}>
-                                <h5 style={fontColor()} className="title text-uppercase">{category.name}</h5>
+                                <span className="st-cat-pill">{category.name}</span>
                             </Link>
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="col-lg-3 container-fluid">
+            <div className="col-lg-3 col-md-12">
                 <ProductSearch/>
             </div>
 
