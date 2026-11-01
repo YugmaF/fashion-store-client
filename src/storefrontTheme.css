@@ -256,6 +256,19 @@ html[data-st-theme="modern"] .carousel-indicators li { background-color: rgba(25
     row-gap: 26px;
 }
 
+/* The legacy "col-md-4 col-lg" classes rely on Bootstrap column sizing that
+   conflicts with the bundled legacy bootstrap in category_card_assets, which
+   collapses .item to near-zero width (its only child, .cover, is absolutely
+   positioned and can't establish intrinsic width). Grid sidesteps that
+   entirely and sizes cards reliably regardless of which Bootstrap "wins". */
+.team-grid .people {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 26px;
+}
+.team-grid .item { width: 100%; margin-bottom: 0; }
+.team-grid .item .box { width: 100%; }
+
 html[data-st-theme="modern"] .team-grid { background: var(--st-bg) !important; }
 
 html[data-st-theme="modern"] .team-grid .item .box {
